@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('escenarios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("usuario_id")->constrained("usuarios")->onDelete("cascade");
+            $table->foreignId("usuario_id")->constrained()->onDelete("cascade");
             $table->string("titulo", 64);
             $table->boolean("visible");
             $table->timestamps();

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('correo', 32)->unique();
             $table->char('clave', 8)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 16);
+            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });

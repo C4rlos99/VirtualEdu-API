@@ -21,27 +21,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(UsuarioController::class)->group(function () {
+        Route::get("/usuario", "usuario");
+        Route::post("/cerrar-sesion", "cerrarSesion");
+    });
+
+    Route::controller(EscenaController::class)->group(function () {
+        Route::get("/escenas/{escenario_id}", "obtenerEscenas");
+        Route::get("/escena/{id}", "obtenerEscena");
+        Route::post("/escena", "crearEscena");
+        route::delete("/escena/{id}", "eliminarEscena");
+
+        Route::controller(EscenarioController::class)->group(function () {
+            Route::get("/escenarios/{usuario_id}", "obtenerEscenarios");
+            Route::get("/escenario/{id}", "obtenerEscenario");
+            Route::post("/escenario", "crearEscenario");
+            route::delete("/escenario/{id}", "eliminarEscenario");
+        });
+
+        Route::controller(EscenaTipoController::class)->group(function () {
+            Route::get("/escena-tipos", "obtenerTipos");
+        });
+    });
 });
 
-Route::controller(EscenaController::class)->group(function () {
-    Route::get("/escenas/{escenario_id}", "obtenerEscenas");
-    Route::get("/escena/{id}", "obtenerEscena");
-    Route::post("/escena", "crearEscena");
-});
+
 
 Route::controller(UsuarioController::class)->group(function () {
-    Route::post("/usuario", "crearUsuario");
-});
-
-Route::controller(EscenarioController::class)->group(function () {
-    Route::get("/escenarios/{usuario_id}", "obtenerEscenarios");
-    Route::get("/escenario/{id}", "obtenerEscenario");
-    Route::post("/escenario", "crearEscenario");
-    route::delete("/escenario/{id}", "eliminarEscenario");
-});
-
-Route::controller(EscenaTipoController::class)->group(function () {
-    Route::get("/escena-tipos", "obtenerTipos");
+    Route::post("/registrar", "registrar");
+    Route::post("/iniciar-sesion", "iniciarSesion");
 });

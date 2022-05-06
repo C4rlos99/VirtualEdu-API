@@ -10,16 +10,16 @@ use Illuminate\Http\Request;
 
 class EscenaController extends Controller
 {
-    public function obtenerEscenas($escenario_id)
+    public function obtenerEscenas(Request $request)
     {
-        $escenas = Escena::where("escenario_id", $escenario_id)->get();
+        $escenas = Escena::where("escenario_id", $request->escenario_id)->get();
 
         return EscenaResource::collection($escenas);
     }
 
-    public function obtenerEscena($id)
+    public function obtenerEscena(Request $request)
     {
-        $escena = Escena::find($id);
+        $escena = Escena::find($request->id);
 
         return new EscenaResource($escena);
     }
@@ -34,13 +34,13 @@ class EscenaController extends Controller
         $escena = Escena::create([
             "escenario_id" => $escenario->id,
             "escena_tipo_id" => $escena_tipo->id,
-            "respuesta1" => $request->input("respuesta1"),
-            "respuesta2" => $request->input("respuesta2"),
-            "respuesta3" => $request->input("respuesta3"),
-            "escena_id" => $request->input("escena_id"),
-            "url_video" => $request->input("url_video"),
-            "url_video_apoyo" => $request->input("url_video_apoyo"),
-            "url_video_refuerzo" => $request->input("url_video_refuerzo"),
+            "respuesta1" => $request->respuesta1,
+            "respuesta2" => $request->respuesta2,
+            "respuesta3" => $request->respuesta3,
+            "escena_id" => $request->escena_id,
+            "url_video" => $request->url_video,
+            "url_video_apoyo" => $request->url_video_apoyo,
+            "url_video_refuerzo" => $request->url_video_refuerzo,
         ]);
 
         $escenario->escenas()->save($escena);
@@ -60,7 +60,11 @@ class EscenaController extends Controller
         $escena->escenaTipo()->associate($escena_tipo);
 
         $escena->save();
+    }
 
-        return new EscenaResource($escena);
+    public function eliminarEscena(Request $request)
+    {
+        $escena = Escena::find($request->id);
+        $escena->delete();
     }
 }

@@ -6,19 +6,20 @@ use App\Http\Resources\EscenarioResource;
 use App\Models\Escenario;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class EscenarioController extends Controller
 {
-    public function obtenerEscenarios($usuario_id)
+    public function obtenerEscenarios(Request $request)
     {
-        $escenarios = Escenario::where("usuario_id", $usuario_id)->get();
+        $escenarios = Escenario::where("usuario_id", $request->usuario_id)->get();
 
         return EscenarioResource::collection($escenarios);
     }
 
-    public function obtenerEscenario($id)
+    public function obtenerEscenario(Request $request)
     {
-        $escenario = Escenario::find($id);
+        $escenario = Escenario::find($request->id);
 
         return new EscenarioResource($escenario);
     }
@@ -28,8 +29,8 @@ class EscenarioController extends Controller
         $usuario = Usuario::find($request->usuario_id);
 
         $escenario = Escenario::create([
-            "titulo" => $request->input("titulo"),
-            "visible" => $request->input("visible"),
+            "titulo" => $request->titulo,
+            "visible" => $request->visible,
             "usuario_id" => $usuario->id,
         ]);
 
@@ -38,13 +39,13 @@ class EscenarioController extends Controller
 
         $escenario->usuario()->associate($usuario);
         $escenario->save();
-
-        return new EscenarioResource($escenario);
     }
 
-    public function eliminarEscenario($id)
+    public function eliminarEscenario(Request $request)
     {
-        $escenario = Escenario::find($id);
+        $escenario = Escenario::find($request->id);
         $escenario->delete();
+
+        return response(["mensaje" => "eliminado"], Response::HTTP_OK);
     }
 }
