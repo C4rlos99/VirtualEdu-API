@@ -17,15 +17,15 @@ class EscenaResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "escenarioId" => $this->escenario_id,
-            "escenaTipoId" => $this->escena_tipo_id,
+            "escenario_id" => $this->escenario_id,
+            "escena_tipo_id" => $this->escena_tipo_id,
             "respuesta1" => $this->respuesta1,
             "respuesta2" => $this->respuesta2,
             "respuesta3" => $this->respuesta3,
-            "escenaId" => $this->escena_id,
-            "urlVideo" => $this->url_video,
-            "urlVideoApoyo" => $this->url_video_apoyo,
-            "urlVideoRefuerzo" => $this->url_video_refuerzo,
+            "escena_id" => $this->escena_id,
+            "url_video" => $this->url_video,
+            "url_video_apoyo" => $this->url_video_apoyo,
+            "url_video_refuerzo" => $this->url_video_refuerzo,
         ];
     }
 }

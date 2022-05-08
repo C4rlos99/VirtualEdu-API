@@ -6,6 +6,7 @@ use App\Models\Escena;
 use App\Models\Escenario;
 use App\Models\EscenaTipo;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use phpDocumentor\Reflection\Types\Null_;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Escena>
@@ -21,6 +22,7 @@ class EscenaFactory extends Factory
     {
         $escenarios = Escenario::pluck("id")->toArray();
         $escena_tipos = EscenaTipo::pluck("id")->toArray();
+        $escenas = Escena::all()->pluck("id")->toArray();
 
         return [
             "escenario_id" => $this->faker->randomElement($escenarios),
@@ -28,7 +30,7 @@ class EscenaFactory extends Factory
             "respuesta1" => $this->faker->word(),
             "respuesta2" => $this->faker->word(),
             "respuesta3" => $this->faker->word(),
-            "escena_id" => $this->faker->numberBetween(1, 100),
+            "escena_id" => $this->faker->randomElement($escenas),
             "url_video" => $this->faker->word(),
             "url_video_apoyo" => $this->faker->word(),
             "url_video_refuerzo" => $this->faker->word(),

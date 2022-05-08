@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GuardarUsuario;
+use App\Http\Requests\StoreUsuario;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
@@ -11,17 +14,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UsuarioController extends Controller
 {
-    public function registrar(Request $request)
+    public function registrar(GuardarUsuario $request)
     {
         $usuario = Usuario::create([
             "nombre" => $request->nombre,
             "apellidos" => $request->apellidos,
             "correo" => $request->correo,
-            "clave" => $request->clave,
+            "clave" => Str::random(8),
             "password" => Hash::make($request->password),
         ]);
 
-        return $usuario;
+        $usuario->save();
+
+        return response(["mensaje" => "Usuario registrado"], Response::HTTP_OK);
     }
 
     public function iniciarSesion(Request $request)

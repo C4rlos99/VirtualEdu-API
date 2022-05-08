@@ -2,38 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EliminarEscena;
+use App\Http\Requests\GuardarEscena;
+use App\Http\Requests\MostrarEscena;
+use App\Http\Requests\MostrarEscenas;
 use App\Http\Resources\EscenaResource;
 use App\Models\Escena;
 use App\Models\Escenario;
 use App\Models\EscenaTipo;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class EscenaController extends Controller
 {
-    public function obtenerEscenas(Request $request)
+    public function obtenerEscenas(MostrarEscenas $request)
     {
         $escenas = Escena::where("escenario_id", $request->escenario_id)->get();
 
         return EscenaResource::collection($escenas);
     }
 
-    public function obtenerEscena(Request $request)
+    public function obtenerEscena(MostrarEscena $request)
     {
-        $escena = Escena::find($request->id);
+        $escena = Escena::findOrFail($request->id);
 
         return new EscenaResource($escena);
     }
 
-    public function crearEscena(Request $request)
+    public function crearEscena(GuardarEscena $request)
     {
-        $escenario = Escenario::find($request->escenario_id);
-        if ($request->escena_id)
-            $escena_padre = Escena::find($request->escena_id);
-        $escena_tipo = EscenaTipo::find($request->escena_tipo_id);
-
         $escena = Escena::create([
-            "escenario_id" => $escenario->id,
-            "escena_tipo_id" => $escena_tipo->id,
+            "escenario_id" => $request->escenario_id,
+            "escena_tipo_id" => $request->escena_tipo_id,
             "respuesta1" => $request->respuesta1,
             "respuesta2" => $request->respuesta2,
             "respuesta3" => $request->respuesta3,
@@ -43,28 +43,16 @@ class EscenaController extends Controller
             "url_video_refuerzo" => $request->url_video_refuerzo,
         ]);
 
-        $escenario->escenas()->save($escena);
-        $escenario->refresh();
-
-        $escena_tipo->escenas()->save($escena);
-        $escena_tipo->refresh();
-
-        $escena->escenario()->associate($escenario);
-
-        if ($request->escena_id !== null) {
-            $escena_padre->escenas()->save($escena);
-            $escena_padre->refresh();
-            $escena->escena()->associate($escena_padre);
-        }
-
-        $escena->escenaTipo()->associate($escena_tipo);
-
         $escena->save();
+
+        return response(["mensaje" => "Escena creada"], Response::HTTP_OK);
     }
 
-    public function eliminarEscena(Request $request)
+    public function eliminarEscena(EliminarEscena $request)
     {
-        $escena = Escena::find($request->id);
+        $escena = Escena::findOrFail($request->id);
         $escena->delete();
+
+        return response(["mensaje" => "Escena eliminada"], Response::HTTP_OK);
     }
 }
