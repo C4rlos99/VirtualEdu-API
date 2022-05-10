@@ -17,14 +17,20 @@ class EscenarioController extends Controller
     {
         $escenarios = Escenario::where("usuario_id", $request->usuario_id)->get();
 
-        return EscenarioResource::collection($escenarios);
+        return response()->json([
+            "escenarios" => EscenarioResource::collection($escenarios),
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function obtenerEscenario(MostrarEscenario $request)
     {
         $escenario = Escenario::findOrFail($request->id);
 
-        return new EscenarioResource($escenario);
+        return response()->json([
+            "escenario" => new EscenarioResource($escenario),
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function crearEscenario(GuardarEscenario $request)
@@ -37,7 +43,10 @@ class EscenarioController extends Controller
 
         $escenario->save();
 
-        return response(["mensaje" => "Escenario creado"], Response::HTTP_OK);
+        return response()->json([
+            "mensaje" => "Escenario creado",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function eliminarEscenario(EliminarEscenario $request)
@@ -45,6 +54,9 @@ class EscenarioController extends Controller
         $escenario = Escenario::findOrFail($request->id);
         $escenario->delete();
 
-        return response(["mensaje" => "Escenario eliminado"], Response::HTTP_OK);
+        return response()->json([
+            "mensaje" => "Escenario eliminado",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 }

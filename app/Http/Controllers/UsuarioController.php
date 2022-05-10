@@ -26,13 +26,19 @@ class UsuarioController extends Controller
 
         $usuario->save();
 
-        return response(["mensaje" => "Usuario registrado"], Response::HTTP_OK);
+        return response()->json([
+            "mensaje" => "Usuario registrado",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function iniciarSesion(Request $request)
     {
         if (!Auth::attempt($request->only("correo", "password"))) {
-            return response(["mensaje" => "Credenciales inválidas"], Response::HTTP_UNAUTHORIZED);
+            return response()->json([
+                "mensaje" => "Credenciales inválidas",
+                "status" => Response::HTTP_UNAUTHORIZED
+            ], Response::HTTP_UNAUTHORIZED);
         }
 
         $usuario = Auth::user();
@@ -41,7 +47,10 @@ class UsuarioController extends Controller
 
         $cookie = cookie("jwt", $token, 60 * 24);
 
-        return response(["mensaje" => "Sesión iniciada"])->withCookie($cookie);
+        return response()->json([
+            "mensaje" => "Sesión iniciada",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK)->withCookie($cookie);
     }
 
     public function usuario()
@@ -53,6 +62,9 @@ class UsuarioController extends Controller
     {
         $cookie = Cookie::forget("jwt");
 
-        return response(["mensaje" => "Sesion cerrada"])->withCookie($cookie);
+        return response()->json([
+            "mensaje" => "Sesion cerrada",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK)->withCookie($cookie);
     }
 }

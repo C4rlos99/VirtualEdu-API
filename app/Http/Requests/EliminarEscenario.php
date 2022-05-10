@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class EliminarEscenario extends FormRequest
 {
@@ -36,5 +38,13 @@ class EliminarEscenario extends FormRequest
         return [
             //
         ];
+    }
+
+    public function failedAuthorization()
+    {
+        throw new HttpResponseException(response()->json([
+            "mensaje" => "Oh! Parece que no tienes acceso a este recurso",
+            "status" => Response::HTTP_FORBIDDEN
+        ], Response::HTTP_FORBIDDEN));
     }
 }

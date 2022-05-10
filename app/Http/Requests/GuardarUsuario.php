@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Symfony\Component\HttpFoundation\Response;
 
 class GuardarUsuario extends FormRequest
 {
@@ -35,5 +38,34 @@ class GuardarUsuario extends FormRequest
             default:
                 break;
         }
+    }
+
+    public function messages()
+    {
+        return [
+            "nombre.required" => "El campo nombre es obligatorio",
+            "apellidos.required" => "El campo apellidos es obligatorio",
+
+            "correo.required" => "El campo correo es obligatorio",
+            "correo.email" => "El campo correo tiene que tener formato email",
+            "correo.unique" => "El correo ya existe",
+
+            "password.required" => "El campo contraseña es obligatorio",
+            "password.min" => "La contraseña debe tener al menos 4 caracteres",
+            "password.max" => "La contraseña puede tener como máximo 12 caracteres",
+            "password.regex" => "La contraseña debe contener al menos 1 letra, 1 número y un caracter especial (!$#%)",
+
+            "rePassword.required" => "El campo contraseña es obligatorio",
+            "rePassword.same" => "Las contraseñas no coinciden",
+        ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            "mensaje" => "Oh! Algo no fue bien",
+            "errores" => $validator->errors(),
+            "status" => Response::HTTP_UNPROCESSABLE_ENTITY,
+        ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

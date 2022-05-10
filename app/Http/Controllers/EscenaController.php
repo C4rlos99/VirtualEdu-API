@@ -19,14 +19,20 @@ class EscenaController extends Controller
     {
         $escenas = Escena::where("escenario_id", $request->escenario_id)->get();
 
-        return EscenaResource::collection($escenas);
+        return response()->json([
+            "escenas" => EscenaResource::collection($escenas),
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function obtenerEscena(MostrarEscena $request)
     {
         $escena = Escena::findOrFail($request->id);
 
-        return new EscenaResource($escena);
+        return response()->json([
+            "escena" => new EscenaResource($escena),
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function crearEscena(GuardarEscena $request)
@@ -45,7 +51,10 @@ class EscenaController extends Controller
 
         $escena->save();
 
-        return response(["mensaje" => "Escena creada"], Response::HTTP_OK);
+        return response()->json([
+            "mensaje" => "Escena creada",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function eliminarEscena(EliminarEscena $request)
@@ -53,6 +62,9 @@ class EscenaController extends Controller
         $escena = Escena::findOrFail($request->id);
         $escena->delete();
 
-        return response(["mensaje" => "Escena eliminada"], Response::HTTP_OK);
+        return response()->json([
+            "mensaje" => "Escena eliminada",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 }

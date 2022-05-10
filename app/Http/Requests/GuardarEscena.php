@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class GuardarEscena extends FormRequest
 {
@@ -23,7 +26,9 @@ class GuardarEscena extends FormRequest
             }
         );
 
-        if ($autoriza = $escenario !== null && $this->escena_id) {
+        $autoriza = $escenario !== null;
+
+        if ($autoriza && $this->escena_id) {
             $escenas = $escenario->escenas()->get();
             $escena = $escenas->first(
                 function ($escena) {
@@ -52,7 +57,7 @@ class GuardarEscena extends FormRequest
         ];
 
         if ($this->escena_id) {
-            $rules["escena_id"] = "exists:escena_tipos,id";
+            $rules["escena_id"] = "exists:escenas,id";
         }
 
         switch ($this->escena_tipo_id) {
@@ -68,5 +73,43 @@ class GuardarEscena extends FormRequest
         }
 
         return $rules;
+    }
+
+    public function messages()
+    {
+        return [
+            "escenario_id.required" => "El campo escenario_id es obligatorio",
+            "escenario_id.exists" => "El campo escenario_id no es válido",
+
+            "escena_tipo_id.required" => "El campo escena_tipo_id es obligatorio",
+            "escena_tipo_id.exists" => "El campo escena_tipo_id no es válido",
+
+            "escena_id.exists" => "El campo escena_id no es válido",
+
+            "respuesta1.required" => "El campo respuesta1 es obligatorio",
+            "respuesta2.required" => "El campo respuesta2 es obligatorio",
+            "respuesta3.required" => "El campo respuesta3 es obligatorio",
+
+            "url_video.required" => "El campo url_video es obligatorio",
+            "url_video_refuerzo.required" => "El campo url_video_refuerzo es obligatorio",
+            "url_video_apoyo.required" => "El campo url_video_apoyo es obligatorio",
+        ];
+    }
+
+    public function failedAuthorization()
+    {
+        throw new HttpResponseException(response()->json([
+            "mensaje" => "Oh! Parece que no tienes acceso a este recurso",
+            "status" => Response::HTTP_FORBIDDEN
+        ], Response::HTTP_FORBIDDEN));
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            "mensaje" => "Oh! Algo no fue bien",
+            "errores" => $validator->errors(),
+            "status" => Response::HTTP_UNPROCESSABLE_ENTITY,
+        ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
