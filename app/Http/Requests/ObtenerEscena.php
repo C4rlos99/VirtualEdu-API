@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class MostrarEscenarios extends FormRequest
+class ObtenerEscena extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +18,20 @@ class MostrarEscenarios extends FormRequest
     {
         $usuario = Auth::user();
 
-        return $usuario->id == $this->usuario_id;
+        $escenarios = $usuario->escenarios()->get();
+        $escenario = $escenarios->first(
+            function ($escenario) {
+                $escenas = $escenario->escenas()->get();
+                $escena = $escenas->first(
+                    function ($escena) {
+                        return $escena->id == $this->id;
+                    }
+                );
+                return $escena !== null;
+            }
+        );
+
+        return $escenario !== null;
     }
 
     /**

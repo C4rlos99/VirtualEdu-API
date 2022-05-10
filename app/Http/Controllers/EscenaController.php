@@ -4,18 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EliminarEscena;
 use App\Http\Requests\GuardarEscena;
-use App\Http\Requests\MostrarEscena;
-use App\Http\Requests\MostrarEscenas;
+use App\Http\Requests\ObtenerEscena;
+use App\Http\Requests\ObtenerEscenas;
 use App\Http\Resources\EscenaResource;
 use App\Models\Escena;
-use App\Models\Escenario;
-use App\Models\EscenaTipo;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenaController extends Controller
 {
-    public function obtenerEscenas(MostrarEscenas $request)
+    public function obtenerEscenas(ObtenerEscenas $request)
     {
         $escenas = Escena::where("escenario_id", $request->escenario_id)->get();
 
@@ -25,7 +22,7 @@ class EscenaController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function obtenerEscena(MostrarEscena $request)
+    public function obtenerEscena(ObtenerEscena $request)
     {
         $escena = Escena::findOrFail($request->id);
 
@@ -53,6 +50,26 @@ class EscenaController extends Controller
 
         return response()->json([
             "mensaje" => "Escena creada",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
+    }
+
+    public function modificarEscena(GuardarEscena $request)
+    {
+        $escena = Escena::findOrFail($request->id);
+
+        $escena->update([
+            "escena_tipo_id" => $request->escena_tipo_id,
+            "respuesta1" => $request->respuesta1,
+            "respuesta2" => $request->respuesta2,
+            "respuesta3" => $request->respuesta3,
+            "url_video" => $request->url_video,
+            "url_video_apoyo" => $request->url_video_apoyo,
+            "url_video_refuerzo" => $request->url_video_refuerzo,
+        ]);
+
+        return response()->json([
+            "mensaje" => "Escena modificada",
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

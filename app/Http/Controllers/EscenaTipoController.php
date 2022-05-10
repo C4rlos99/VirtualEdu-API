@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\EscenaTipoResource;
 use App\Models\EscenaTipo;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenaTipoController extends Controller

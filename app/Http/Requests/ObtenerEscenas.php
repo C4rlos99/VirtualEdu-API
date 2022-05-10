@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class MostrarEscenas extends FormRequest
+class ObtenerEscenas extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

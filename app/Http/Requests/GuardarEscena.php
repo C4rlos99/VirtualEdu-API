@@ -28,7 +28,7 @@ class GuardarEscena extends FormRequest
 
         $autoriza = $escenario !== null;
 
-        if ($autoriza && $this->escena_id) {
+        if ($this->method() == "POST" && $autoriza && $this->escena_id) {
             $escenas = $escenario->escenas()->get();
             $escena = $escenas->first(
                 function ($escena) {
@@ -52,21 +52,26 @@ class GuardarEscena extends FormRequest
         $rules = [
             "escenario_id" => "required|exists:escenarios,id",
             "escena_tipo_id" => "required|exists:escena_tipos,id",
+            "escena_id" => "nullable|exists:escenas,id",
             "respuesta1" => "required",
+            "respuesta2" => "prohibited",
+            "respuesta3" => "prohibited",
             "url_video" => "required",
+            "url_video_apoyo" => "prohibited",
+            "url_video_refuerzo" => "prohibited",
         ];
-
-        if ($this->escena_id) {
-            $rules["escena_id"] = "exists:escenas,id";
-        }
 
         switch ($this->escena_tipo_id) {
             case 3:
-                $rules["respuesta3"] = "required";
+
                 $rules["url_video_refuerzo"] = "required";
             case 2:
-                $rules["respuesta2"] = "required";
+
                 $rules["url_video_apoyo"] = "required";
+                break;
+            case 4:
+                $rules["respuesta2"] = "required";
+                $rules["respuesta3"] = "required";
                 break;
             default:
                 break;
@@ -90,9 +95,17 @@ class GuardarEscena extends FormRequest
             "respuesta2.required" => "El campo respuesta2 es obligatorio",
             "respuesta3.required" => "El campo respuesta3 es obligatorio",
 
+            "respuesta2.prohibited" => "El campo respuesta3 solo puede estar presente para el tipo de escena 4",
+            "respuesta3.prohibited" => "El campo respuesta3 solo puede estar presente para el tipo de escena 4",
+
+
             "url_video.required" => "El campo url_video es obligatorio",
-            "url_video_refuerzo.required" => "El campo url_video_refuerzo es obligatorio",
             "url_video_apoyo.required" => "El campo url_video_apoyo es obligatorio",
+            "url_video_refuerzo.required" => "El campo url_video_refuerzo es obligatorio",
+
+
+            "url_video_apoyo.prohibited" => "El campo url_video_apoyo solo puede estar presente para los tipos de escena 2 y 3",
+            "url_video_refuerzo.prohibited" => "El campo url_video_refuerzo solo puede estar presente para el tipo de escena 3",
         ];
     }
 

@@ -26,18 +26,13 @@ class GuardarUsuario extends FormRequest
      */
     public function rules()
     {
-        switch ($this->method()) {
-            case "POST":
-                return [
-                    "nombre" => "required",
-                    "apellidos" => "required",
-                    "correo" => "required|email:rfc,dns|unique:usuarios",
-                    "password" => "required|min:4|max:12|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/",
-                    "rePassword" => "required|same:password",
-                ];
-            default:
-                break;
-        }
+        return [
+            "nombre" => "required",
+            "apellidos" => "required",
+            "correo" => "required|email:rfc,dns|unique:usuarios",
+            "password" => "required|min:4|max:12|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/",
+            "rePassword" => "required|same:password",
+        ];
     }
 
     public function messages()

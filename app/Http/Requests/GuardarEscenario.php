@@ -19,7 +19,18 @@ class GuardarEscenario extends FormRequest
     {
         $usuario = Auth::user();
 
-        return $usuario->id === $this->usuario_id;
+        switch ($this->method()) {
+            case "POST":
+                return $usuario->id === $this->usuario_id;
+            case "PUT":
+                $escenarios = $usuario->escenarios()->get();
+                $escenario = $escenarios->first(
+                    function ($escenario) {
+                        return $escenario->id == $this->id;
+                    }
+                );
+                return $escenario != null;
+        }
     }
 
     /**
@@ -29,11 +40,15 @@ class GuardarEscenario extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             "titulo" => "required",
             "visible" => "boolean",
-            "usuario_id" => "required|exists:usuarios,id",
         ];
+
+        if ($this->method() === "POST")
+            $rules["usuario_id"] = "required|exists:usuarios,id";
+
+        return $rules;
     }
 
     public function messages()

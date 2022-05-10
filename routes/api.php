@@ -4,10 +4,6 @@ use App\Http\Controllers\EscenaController;
 use App\Http\Controllers\EscenarioController;
 use App\Http\Controllers\EscenaTipoController;
 use App\Http\Controllers\UsuarioController;
-use App\Models\Escenario;
-use App\Models\EscenaTipo;
-use App\Models\Usuario;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,18 +27,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get("/escenas/{escenario_id}", "obtenerEscenas");
         Route::get("/escena/{id}", "obtenerEscena");
         Route::post("/escena", "crearEscena");
+        Route::put("/escena/{id}", "modificarEscena");
         route::delete("/escena/{id}", "eliminarEscena");
+    });
 
-        Route::controller(EscenarioController::class)->group(function () {
-            Route::get("/escenarios/{usuario_id}", "obtenerEscenarios");
-            Route::get("/escenario/{id}", "obtenerEscenario");
-            Route::post("/escenario", "crearEscenario");
-            route::delete("/escenario/{id}", "eliminarEscenario");
-        });
+    Route::controller(EscenarioController::class)->group(function () {
+        Route::get("/escenarios/{usuario_id}", "obtenerEscenarios");
+        Route::get("/escenario/{id}", "obtenerEscenario");
+        Route::post("/escenario", "crearEscenario");
+        Route::put("/escenario/{id}", "modificarEscenario");
+        route::delete("/escenario/{id}", "eliminarEscenario");
+    });
 
-        Route::controller(EscenaTipoController::class)->group(function () {
-            Route::get("/escena-tipos", "obtenerTipos");
-        });
+    Route::controller(EscenaTipoController::class)->group(function () {
+        Route::get("/escena-tipos", "obtenerTipos");
     });
 });
 

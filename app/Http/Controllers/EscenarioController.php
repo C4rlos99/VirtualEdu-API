@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EliminarEscenario;
 use App\Http\Requests\GuardarEscenario;
-use App\Http\Requests\MostrarEscenario;
-use App\Http\Requests\MostrarEscenarios;
+use App\Http\Requests\ObtenerEscenario;
+use App\Http\Requests\ObtenerEscenarios;
 use App\Http\Resources\EscenarioResource;
 use App\Models\Escenario;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenarioController extends Controller
 {
-    public function obtenerEscenarios(MostrarEscenarios $request)
+    public function obtenerEscenarios(ObtenerEscenarios $request)
     {
         $escenarios = Escenario::where("usuario_id", $request->usuario_id)->get();
 
@@ -23,7 +22,7 @@ class EscenarioController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function obtenerEscenario(MostrarEscenario $request)
+    public function obtenerEscenario(ObtenerEscenario $request)
     {
         $escenario = Escenario::findOrFail($request->id);
 
@@ -45,6 +44,21 @@ class EscenarioController extends Controller
 
         return response()->json([
             "mensaje" => "Escenario creado",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
+    }
+
+    public function modificarEscenario(GuardarEscenario $request)
+    {
+        $escenario = Escenario::findOrFail($request->id);
+
+        $escenario->update([
+            "titulo" => $request->titulo,
+            "visible" => $request->visible,
+        ]);
+
+        return response()->json([
+            "mensaje" => "Escenario modificado",
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

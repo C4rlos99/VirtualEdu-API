@@ -15,6 +15,6 @@ class EscenaTipoSeeder extends Seeder
      */
     public function run()
     {
-        EscenaTipo::factory(3)->create();
+        EscenaTipo::factory(4)->create();
     }
 }

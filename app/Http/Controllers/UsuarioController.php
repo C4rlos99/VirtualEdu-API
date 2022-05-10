@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GuardarUsuario;
-use App\Http\Requests\StoreUsuario;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
