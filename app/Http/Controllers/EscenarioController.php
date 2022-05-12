@@ -8,6 +8,8 @@ use App\Http\Requests\ObtenerEscenario;
 use App\Http\Requests\ObtenerEscenarios;
 use App\Http\Resources\EscenarioResource;
 use App\Models\Escenario;
+use App\Models\Usuario;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenarioController extends Controller
@@ -15,6 +17,20 @@ class EscenarioController extends Controller
     public function obtenerEscenarios(ObtenerEscenarios $request)
     {
         $escenarios = Escenario::where("usuario_id", $request->usuario_id)->get();
+
+        return response()->json([
+            "escenarios" => EscenarioResource::collection($escenarios),
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
+    }
+
+    public function obtenerEscenariosApp(Request $request)
+    {
+        $usuario = Usuario::where("clave", $request->clave)->first();
+        $escenarios = [];
+
+        if ($usuario)
+            $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("visible", true)->get();
 
         return response()->json([
             "escenarios" => EscenarioResource::collection($escenarios),

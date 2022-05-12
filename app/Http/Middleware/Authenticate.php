@@ -3,7 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Symfony\Component\HttpFoundation\Response;
 
 class Authenticate extends Middleware
 {
@@ -29,5 +32,13 @@ class Authenticate extends Middleware
         $this->authenticate($request, $guards);
 
         return $next($request);
+    }
+
+    protected function unauthenticated($request, array $guards)
+    {
+        abort(response()->json([
+            "mensaje" => "No autenticado",
+            "status" => Response::HTTP_UNAUTHORIZED
+        ], Response::HTTP_UNAUTHORIZED));
     }
 }

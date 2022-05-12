@@ -8,11 +8,22 @@ use App\Http\Requests\ObtenerEscena;
 use App\Http\Requests\ObtenerEscenas;
 use App\Http\Resources\EscenaResource;
 use App\Models\Escena;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenaController extends Controller
 {
     public function obtenerEscenas(ObtenerEscenas $request)
+    {
+        $escenas = Escena::where("escenario_id", $request->escenario_id)->get();
+
+        return response()->json([
+            "escenas" => EscenaResource::collection($escenas),
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
+    }
+
+    public function obtenerEscenasApp(Request $request)
     {
         $escenas = Escena::where("escenario_id", $request->escenario_id)->get();
 

@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(EscenaController::class)->group(function () {
         Route::get("/escenas/{escenario_id}", "obtenerEscenas");
+        Route::get("/escenas-app/{escenario_id}", "obtenerEscenasApp");
         Route::get("/escena/{id}", "obtenerEscena");
         Route::post("/escena", "crearEscena");
         Route::put("/escena/{id}", "modificarEscena");
@@ -33,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(EscenarioController::class)->group(function () {
         Route::get("/escenarios/{usuario_id}", "obtenerEscenarios");
+        Route::get("/escenarios-app/{clave}", "obtenerEscenariosApp");
         Route::get("/escenario/{id}", "obtenerEscenario");
         Route::post("/escenario", "crearEscenario");
         Route::put("/escenario/{id}", "modificarEscenario");

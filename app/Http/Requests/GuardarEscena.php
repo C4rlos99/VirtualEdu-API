@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Escenario;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -19,27 +20,45 @@ class GuardarEscena extends FormRequest
     {
         $usuario = Auth::user();
 
-        $escenarios = $usuario->escenarios()->get();
-        $escenario = $escenarios->first(
-            function ($escenario) {
-                return $escenario->id === $this->escenario_id;
-            }
-        );
+        switch ($this->method()) {
+            case "POST":
+                $escenarios = $usuario->escenarios()->get();
+                $escenario = $escenarios->first(
+                    function ($escenario) {
+                        return $escenario->id === $this->escenario_id;
+                    }
+                );
 
-        $autoriza = $escenario !== null;
+                $autoriza = $escenario !== null;
 
-        if ($this->method() == "POST" && $autoriza && $this->escena_id) {
-            $escenas = $escenario->escenas()->get();
-            $escena = $escenas->first(
-                function ($escena) {
-                    return $escena->id === $this->escena_id;
+                if ($autoriza && $this->escena_id) {
+                    $escenas = $escenario->escenas()->get();
+                    $escena = $escenas->first(
+                        function ($escena) {
+                            return $escena->id === $this->escena_id;
+                        }
+                    );
+
+                    $autoriza = $autoriza && $escena;
                 }
-            );
 
-            $autoriza = $autoriza && $escena;
+                return $autoriza;
+            case "PUT":
+                $escenarios = $usuario->escenarios()->get();
+                $escenario = $escenarios->first(
+                    function ($escenario) {
+                        $escenas = $escenario->escenas()->get();
+                        $escena = $escenas->first(
+                            function ($escena) {
+                                return $escena->id == $this->id;
+                            }
+                        );
+                        return $escena !== null;
+                    }
+                );
+
+                return $escenario !== null;
         }
-
-        return $autoriza;
     }
 
     /**
@@ -50,7 +69,6 @@ class GuardarEscena extends FormRequest
     public function rules()
     {
         $rules = [
-            "escenario_id" => "required|exists:escenarios,id",
             "escena_tipo_id" => "required|exists:escena_tipos,id",
             "escena_id" => "nullable|exists:escenas,id",
             "respuesta1" => "required",
@@ -60,6 +78,9 @@ class GuardarEscena extends FormRequest
             "url_video_apoyo" => "prohibited",
             "url_video_refuerzo" => "prohibited",
         ];
+
+        if ($this->method() === "POST")
+            $rules["escenario_id"] = "required|exists:escenarios,id";
 
         switch ($this->escena_tipo_id) {
             case 3:
