@@ -7,13 +7,8 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EliminarEscenario extends FormRequest
+class EliminarRespuesta extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         $usuario = Auth::user();
@@ -21,18 +16,25 @@ class EliminarEscenario extends FormRequest
         $escenarios = $usuario->escenarios()->get();
         $escenario = $escenarios->first(
             function ($escenario) {
-                return $escenario->id == $this->id;
+                $escenas = $escenario->escenas()->get();
+                $escena = $escenas->first(
+                    function ($escena) {
+                        $respuestas = $escena->respuestas()->get();
+                        $respuesta = $respuestas->first(
+                            function ($respuesta) {
+                                return $respuesta->id == $this->id;
+                            }
+                        );
+                        return $respuesta !== null;
+                    }
+                );
+                return $escena !== null;
             }
         );
 
-        return $escenario != null;
+        return $escenario !== null && !$escenario->eliminado;;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [

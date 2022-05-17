@@ -10,11 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GuardarEscenario extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         $usuario = Auth::user();
@@ -22,28 +17,25 @@ class GuardarEscenario extends FormRequest
         switch ($this->method()) {
             case "POST":
                 return $usuario->id === $this->usuario_id;
-            case "PUT":
+            case "PATCH":
                 $escenarios = $usuario->escenarios()->get();
                 $escenario = $escenarios->first(
                     function ($escenario) {
                         return $escenario->id == $this->id;
                     }
                 );
-                return $escenario != null;
+                return $escenario != null && !$escenario->eliminado;
         }
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
-        $rules = [
-            "titulo" => "required",
-            "visible" => "boolean",
-        ];
+        $rules = [];
+
+        if ($this->route()->uri === "api/escenario/{id}") {
+            $rules["titulo"] = "required";
+            $rules["visible"] = "boolean";
+        }
 
         if ($this->method() === "POST")
             $rules["usuario_id"] = "required|exists:usuarios,id";

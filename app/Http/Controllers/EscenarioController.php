@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EliminarEscenario;
 use App\Http\Requests\GuardarEscenario;
 use App\Http\Requests\ObtenerEscenario;
 use App\Http\Requests\ObtenerEscenarios;
@@ -16,7 +15,7 @@ class EscenarioController extends Controller
 {
     public function obtenerEscenarios(ObtenerEscenarios $request)
     {
-        $escenarios = Escenario::where("usuario_id", $request->usuario_id)->get();
+        $escenarios = Escenario::where("usuario_id", $request->usuario_id, "and")->where("eliminado", false)->get();
 
         return response()->json([
             "escenarios" => EscenarioResource::collection($escenarios),
@@ -30,7 +29,7 @@ class EscenarioController extends Controller
         $escenarios = [];
 
         if ($usuario)
-            $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("visible", true)->get();
+            $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("visible", true, "and")->where("eliminado", false)->get();
 
         return response()->json([
             "escenarios" => EscenarioResource::collection($escenarios),
@@ -54,12 +53,12 @@ class EscenarioController extends Controller
             "titulo" => $request->titulo,
             "visible" => $request->visible,
             "usuario_id" => $request->usuario_id,
+            "eliminado" => false,
         ]);
-
-        $escenario->save();
 
         return response()->json([
             "mensaje" => "Escenario creado",
+            "escenario" => $escenario,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
@@ -75,17 +74,22 @@ class EscenarioController extends Controller
 
         return response()->json([
             "mensaje" => "Escenario modificado",
+            "escenario" => $escenario,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
 
-    public function eliminarEscenario(EliminarEscenario $request)
+    public function eliminarEscenario(GuardarEscenario $request)
     {
         $escenario = Escenario::findOrFail($request->id);
-        $escenario->delete();
+
+        $escenario->update([
+            "eliminado" => true,
+        ]);
 
         return response()->json([
             "mensaje" => "Escenario eliminado",
+            "escenario" => $escenario,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

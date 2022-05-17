@@ -13,6 +13,7 @@ class Escenario extends Model
         "usuario_id",
         "titulo",
         "visible",
+        "eliminado",
     ];
 
     public function usuario()

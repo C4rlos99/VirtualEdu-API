@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Escenario;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
@@ -9,30 +10,32 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ObtenerEscenas extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        $usuario = Auth::user();
+        switch ($this->route()->uri) {
+            case "api/escenas/{escenario_id}":
+                $usuario = Auth::user();
 
-        $escenarios = $usuario->escenarios()->get();
-        $escenario = $escenarios->first(
-            function ($escenario) {
-                return $escenario->id == $this->escenario_id;
-            }
-        );
+                $escenarios = $usuario->escenarios()->get();
+                $escenario = $escenarios->first(
+                    function ($escenario) {
+                        return $escenario->id == $this->escenario_id;
+                    }
+                );
 
-        return $escenario != null;
+                return $escenario != null && !$escenario->eliminado;
+            case "api/escenas-app/{escenario_id}":
+                $escenarios = Escenario::all();
+                $escenario = $escenarios->first(
+                    function ($escenario) {
+                        return $escenario->id == $this->escenario_id && !$escenario->eliminado;
+                    }
+                );
+
+                return $escenario !== null;
+        }
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [

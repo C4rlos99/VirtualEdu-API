@@ -9,11 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ObtenerEscenario extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         $usuario = Auth::user();
@@ -21,18 +16,13 @@ class ObtenerEscenario extends FormRequest
         $escenarios = $usuario->escenarios()->get();
         $escenario = $escenarios->first(
             function ($escenario) {
-                return $escenario->id == $this->id;
+                return $escenario->id == $this->id && !$escenario->eliminado;
             }
         );
 
         return $escenario != null;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [

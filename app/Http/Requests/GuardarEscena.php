@@ -11,11 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GuardarEscena extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         $usuario = Auth::user();
@@ -25,17 +20,21 @@ class GuardarEscena extends FormRequest
                 $escenarios = $usuario->escenarios()->get();
                 $escenario = $escenarios->first(
                     function ($escenario) {
-                        return $escenario->id === $this->escenario_id;
+                        return $escenario->id == $this->escenario_id && !$escenario->eliminado;
                     }
                 );
 
                 $autoriza = $escenario !== null;
 
-                if ($autoriza && $this->escena_id) {
+                if ($autoriza && $this->respuesta_id) {
                     $escenas = $escenario->escenas()->get();
                     $escena = $escenas->first(
                         function ($escena) {
-                            return $escena->id === $this->escena_id;
+                            $respuestas = $escena->respuestas()->get();
+                            $respuesta = $respuestas->first(function ($respuesta) {
+                                return $respuesta->id == $this->respuesta_id;
+                            });
+                            return $respuesta !== null;
                         }
                     );
 
@@ -43,7 +42,7 @@ class GuardarEscena extends FormRequest
                 }
 
                 return $autoriza;
-            case "PUT":
+            case "PATCH":
                 $escenarios = $usuario->escenarios()->get();
                 $escenario = $escenarios->first(
                     function ($escenario) {
@@ -57,42 +56,30 @@ class GuardarEscena extends FormRequest
                     }
                 );
 
-                return $escenario !== null;
+                return $escenario !== null && !$escenario->eliminado;;
         }
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         $rules = [
-            "escena_tipo_id" => "required|exists:escena_tipos,id",
-            "escena_id" => "nullable|exists:escenas,id",
-            "respuesta1" => "required",
-            "respuesta2" => "prohibited",
-            "respuesta3" => "prohibited",
             "url_video" => "required",
             "url_video_apoyo" => "prohibited",
             "url_video_refuerzo" => "prohibited",
         ];
 
-        if ($this->method() === "POST")
+        if ($this->method() === "POST") {
             $rules["escenario_id"] = "required|exists:escenarios,id";
+            $rules["escena_tipo_id"] = "required|exists:escena_tipos,id";
+            $rules["respuesta_id"] = "nullable|exists:respuestas,id";
+        }
 
         switch ($this->escena_tipo_id) {
             case 3:
-
                 $rules["url_video_refuerzo"] = "required";
             case 2:
 
                 $rules["url_video_apoyo"] = "required";
-                break;
-            case 4:
-                $rules["respuesta2"] = "required";
-                $rules["respuesta3"] = "required";
                 break;
             default:
                 break;
@@ -110,20 +97,11 @@ class GuardarEscena extends FormRequest
             "escena_tipo_id.required" => "El campo escena_tipo_id es obligatorio",
             "escena_tipo_id.exists" => "El campo escena_tipo_id no es válido",
 
-            "escena_id.exists" => "El campo escena_id no es válido",
-
-            "respuesta1.required" => "El campo respuesta1 es obligatorio",
-            "respuesta2.required" => "El campo respuesta2 es obligatorio",
-            "respuesta3.required" => "El campo respuesta3 es obligatorio",
-
-            "respuesta2.prohibited" => "El campo respuesta3 solo puede estar presente para el tipo de escena 4",
-            "respuesta3.prohibited" => "El campo respuesta3 solo puede estar presente para el tipo de escena 4",
-
+            "respuesta_id.exists" => "El campo respuesta_id no es válido",
 
             "url_video.required" => "El campo url_video es obligatorio",
             "url_video_apoyo.required" => "El campo url_video_apoyo es obligatorio",
             "url_video_refuerzo.required" => "El campo url_video_refuerzo es obligatorio",
-
 
             "url_video_apoyo.prohibited" => "El campo url_video_apoyo solo puede estar presente para los tipos de escena 2 y 3",
             "url_video_refuerzo.prohibited" => "El campo url_video_refuerzo solo puede estar presente para el tipo de escena 3",

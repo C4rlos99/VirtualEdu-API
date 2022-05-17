@@ -18,6 +18,7 @@ class EscenarioResource extends JsonResource
             "id" => $this->id,
             "titulo" => $this->titulo,
             "visible" => $this->visible,
+            "eliminado" => $this->eliminado,
             "fecha_creacion" => $this->updated_at,
         ];
     }

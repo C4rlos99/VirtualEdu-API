@@ -15,15 +15,13 @@ class UsuarioController extends Controller
 {
     public function registrar(GuardarUsuario $request)
     {
-        $usuario = Usuario::create([
+        Usuario::create([
             "nombre" => $request->nombre,
             "apellidos" => $request->apellidos,
             "correo" => $request->correo,
             "clave" => Str::random(8),
             "password" => Hash::make($request->password),
         ]);
-
-        $usuario->save();
 
         return response()->json([
             "mensaje" => "Usuario registrado",

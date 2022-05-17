@@ -12,10 +12,7 @@ class Escena extends Model
     protected $fillable = [
         "escenario_id",
         "escena_tipo_id",
-        "respuesta1",
-        "respuesta2",
-        "respuesta3",
-        "escena_id",
+        "respuesta_id",
         "url_video",
         "url_video_apoyo",
         "url_video_refuerzo",
@@ -31,13 +28,13 @@ class Escena extends Model
         return $this->belongsTo(EscenaTipo::class);
     }
 
-    public function escena()
+    public function respuesta()
     {
-        return $this->belongsTo(self::class, "escena_id");
+        return $this->belongsTo(Respuesta::class);
     }
 
-    public function escenas()
+    public function respuestas()
     {
-        return $this->hasMany(self::class, "escena_id");
+        return $this->hasMany(Respuesta::class);
     }
 }
