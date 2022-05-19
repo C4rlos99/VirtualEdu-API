@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GuardarUsuario;
+use App\Http\Resources\UsuarioResource;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -52,7 +53,10 @@ class UsuarioController extends Controller
 
     public function usuario()
     {
-        return Auth::user();
+        return response()->json([
+            "usuario" => new UsuarioResource(Auth::user()),
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
     }
 
     public function cerrarSesion()

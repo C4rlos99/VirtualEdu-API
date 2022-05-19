@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(EscenarioController::class)->group(function () {
-        Route::get("/escenarios/{usuario_id}", "obtenerEscenarios");
+        Route::get("/escenarios", "obtenerEscenarios");
         Route::get("/escenarios-app/{clave}", "obtenerEscenariosApp");
         Route::get("/escenario/{id}", "obtenerEscenario");
         Route::post("/escenario", "crearEscenario");

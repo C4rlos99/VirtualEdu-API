@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GuardarEscenario;
 use App\Http\Requests\ObtenerEscenario;
-use App\Http\Requests\ObtenerEscenarios;
 use App\Http\Resources\EscenarioResource;
 use App\Models\Escenario;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenarioController extends Controller
 {
-    public function obtenerEscenarios(ObtenerEscenarios $request)
+    public function obtenerEscenarios()
     {
-        $escenarios = Escenario::where("usuario_id", $request->usuario_id, "and")->where("eliminado", false)->get();
+        $usuario = Auth::user();
+
+        $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("eliminado", false)->get();
 
         return response()->json([
             "escenarios" => EscenarioResource::collection($escenarios),
