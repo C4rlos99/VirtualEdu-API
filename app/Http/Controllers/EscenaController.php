@@ -15,9 +15,13 @@ class EscenaController extends Controller
     public function obtenerEscenas(ObtenerEscenas $request)
     {
         $escenaRaiz = Escena::where("escenario_id", $request->escenario_id, "and")->where("respuesta_id", null)->first();
+        $escenas = null;
+
+        if ($escenaRaiz)
+            $escenas = new EscenaResource($escenaRaiz);
 
         return response()->json([
-            "escenas" => new EscenaResource($escenaRaiz),
+            "escenas" => $escenas,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
@@ -25,9 +29,13 @@ class EscenaController extends Controller
     public function obtenerEscenasApp(ObtenerEscenas $request)
     {
         $escenaRaiz = Escena::where("escenario_id", $request->escenario_id, "and")->where("respuesta_id", null)->first();
+        $escenas = null;
+
+        if ($escenaRaiz)
+            $escenas = new EscenaResource($escenaRaiz);
 
         return response()->json([
-            "escenas" => new EscenaResource($escenaRaiz),
+            "escenas" =>  $escenas,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

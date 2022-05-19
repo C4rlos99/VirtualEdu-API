@@ -23,7 +23,7 @@ class ObtenerEscenas extends FormRequest
                     }
                 );
 
-                return $escenario != null && !$escenario->eliminado;
+                return $escenario !== null && !$escenario->eliminado;
             case "api/escenas-app/{escenario_id}":
                 $escenarios = Escenario::all();
                 $escenario = $escenarios->first(
