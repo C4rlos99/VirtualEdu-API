@@ -51,10 +51,12 @@ class EscenarioController extends Controller
 
     public function crearEscenario(GuardarEscenario $request)
     {
+        $usuario = Auth::user();
+
         $escenario = Escenario::create([
             "titulo" => $request->titulo,
             "visible" => $request->visible,
-            "usuario_id" => $request->usuario_id,
+            "usuario_id" => $usuario->id,
             "eliminado" => false,
         ]);
 

@@ -12,33 +12,32 @@ class GuardarEscenario extends FormRequest
 {
     public function authorize()
     {
-        $usuario = Auth::user();
+        if ($this->route()->uri !== "api/escenario") {
+            $usuario = Auth::user();
 
-        switch ($this->method()) {
-            case "POST":
-                return $usuario->id === $this->usuario_id;
-            case "PATCH":
-                $escenarios = $usuario->escenarios()->get();
-                $escenario = $escenarios->first(
-                    function ($escenario) {
-                        return $escenario->id == $this->id;
-                    }
-                );
-                return $escenario != null && !$escenario->eliminado;
-        }
+            switch ($this->method()) {
+                case "POST":
+                    return $usuario->id === $this->usuario_id;
+                case "PATCH":
+                    $escenarios = $usuario->escenarios()->get();
+                    $escenario = $escenarios->first(
+                        function ($escenario) {
+                            return $escenario->id == $this->id;
+                        }
+                    );
+                    return $escenario != null && !$escenario->eliminado;
+            }
+        } else return true;
     }
 
     public function rules()
     {
         $rules = [];
 
-        if ($this->route()->uri === "api/escenario/{id}") {
+        if ($this->route()->uri === "api/escenario/{id}" || $this->route()->uri === "api/escenario") {
             $rules["titulo"] = "required";
             $rules["visible"] = "boolean";
         }
-
-        if ($this->method() === "POST")
-            $rules["usuario_id"] = "required|exists:usuarios,id";
 
         return $rules;
     }
@@ -48,8 +47,6 @@ class GuardarEscenario extends FormRequest
         return [
             "titulo.required" => "El campo titulo es obligatorio",
             "visible.boolean" => "El campo visible debe de ser true o false",
-            "usuario_id.required" => "El campo usuario_id es obligatorio",
-            "usuario_id.exists" => "El campo usuario_id no es válido",
         ];
     }
 
