@@ -62,7 +62,7 @@ class EscenarioController extends Controller
 
         return response()->json([
             "mensaje" => "Escenario creado",
-            "escenario" => $escenario,
+            "escenario" => new EscenarioResource($escenario),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
@@ -78,7 +78,7 @@ class EscenarioController extends Controller
 
         return response()->json([
             "mensaje" => "Escenario modificado",
-            "escenario" => $escenario,
+            "escenario" => new EscenarioResource($escenario),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
@@ -93,7 +93,7 @@ class EscenarioController extends Controller
 
         return response()->json([
             "mensaje" => "Escenario eliminado",
-            "escenario" => $escenario,
+            "escenario" => new EscenarioResource($escenario),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

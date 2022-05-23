@@ -35,7 +35,7 @@ class EscenaController extends Controller
             $escenas = new EscenaResource($escenaRaiz);
 
         return response()->json([
-            "escenas" =>  $escenas,
+            "escenas" => $escenas,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
@@ -63,7 +63,7 @@ class EscenaController extends Controller
 
         return response()->json([
             "mensaje" => "Escena creada",
-            "escena" => $escena,
+            "escena" => new EscenaResource($escena),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
@@ -80,7 +80,7 @@ class EscenaController extends Controller
 
         return response()->json([
             "mensaje" => "Escena modificada",
-            "escena" => $escena,
+            "escena" => new EscenaResource($escena),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

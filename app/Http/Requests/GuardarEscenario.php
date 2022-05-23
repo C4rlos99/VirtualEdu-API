@@ -12,22 +12,20 @@ class GuardarEscenario extends FormRequest
 {
     public function authorize()
     {
-        if ($this->route()->uri !== "api/escenario") {
-            $usuario = Auth::user();
+        $usuario = Auth::user();
 
-            switch ($this->method()) {
-                case "POST":
-                    return $usuario->id === $this->usuario_id;
-                case "PATCH":
-                    $escenarios = $usuario->escenarios()->get();
-                    $escenario = $escenarios->first(
-                        function ($escenario) {
-                            return $escenario->id == $this->id;
-                        }
-                    );
-                    return $escenario != null && !$escenario->eliminado;
-            }
-        } else return true;
+        switch ($this->method()) {
+            case "POST":
+                return true;
+            case "PATCH":
+                $escenarios = $usuario->escenarios()->get();
+                $escenario = $escenarios->first(
+                    function ($escenario) {
+                        return $escenario->id == $this->id;
+                    }
+                );
+                return $escenario != null && !$escenario->eliminado;
+        }
     }
 
     public function rules()
