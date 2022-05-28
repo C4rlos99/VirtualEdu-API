@@ -56,7 +56,10 @@ class GuardarRespuesta extends FormRequest
     public function rules()
     {
         $rules = [
-            "valores" => "required"
+            "palabras_correctas" => "required",
+            "min_correctas" => "required",
+            "palabras_incorrectas" => "nullable",
+            "max_incorrectas" => "nullable",
         ];
 
         if ($this->method() === "POST")
@@ -68,7 +71,8 @@ class GuardarRespuesta extends FormRequest
     public function messages()
     {
         return [
-            "valores.required" => "El campo valores es obligatorio",
+            "palabras_correctas.required" => "El campo palabras_correctas es obligatorio",
+            "min_correctas.required" => "El campo min_correctas es obligatorio",
 
             "escena_id.required" => "El campo escena_id es obligatorio",
             "escena_id.exists" => "El campo escena_id no es válido",

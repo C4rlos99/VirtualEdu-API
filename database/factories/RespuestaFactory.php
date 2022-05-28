@@ -17,7 +17,10 @@ class RespuestaFactory extends Factory
     public function definition()
     {
         return [
-            "valores" => $this->faker->word(),
+            "palabras_correctas" => $this->faker->word(),
+            "min_correctas" => $this->faker->numberBetween(1, 7),
+            "palabras_incorrectas" => $this->faker->word(),
+            "max_incorrectas" => $this->faker->numberBetween(1, 3),
         ];
     }
 }

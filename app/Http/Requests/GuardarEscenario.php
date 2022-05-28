@@ -34,6 +34,7 @@ class GuardarEscenario extends FormRequest
 
         if ($this->route()->uri === "api/escenario/{id}" || $this->route()->uri === "api/escenario") {
             $rules["titulo"] = "required";
+            $rules["lenguaje_id"] = "required|exists:lenguajes,id";
             $rules["visible"] = "boolean";
         }
 
@@ -45,6 +46,9 @@ class GuardarEscenario extends FormRequest
         return [
             "titulo.required" => "El campo titulo es obligatorio",
             "visible.boolean" => "El campo visible debe de ser true o false",
+
+            "lenguaje_id.required" => "El campo lenguaje_id es obligatorio",
+            "lenguaje_id.exists" => "El campo lenguaje_id no es válido",
         ];
     }
 

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EscenaTipoController extends Controller
 {
-    public function obtenerTipos()
+    public function obtenerEscenaTipos()
     {
         $escenas_tipos = EscenaTipo::all();
 

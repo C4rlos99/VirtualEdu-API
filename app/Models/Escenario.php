@@ -13,6 +13,7 @@ class Escenario extends Model
         "usuario_id",
         "titulo",
         "visible",
+        "lenguaje_id",
         "eliminado",
     ];
 
@@ -24,5 +25,10 @@ class Escenario extends Model
     public function escenas()
     {
         return $this->hasMany(Escena::class);
+    }
+
+    public function lenguaje()
+    {
+        return $this->belongsTo(lenguaje::class);
     }
 }

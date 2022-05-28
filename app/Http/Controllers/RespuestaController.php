@@ -13,7 +13,10 @@ class RespuestaController extends Controller
     {
         $respuesta = Respuesta::create([
             "escena_id" => $request->escena_id,
-            "valores" => $request->valores,
+            "palabras_correctas" => $request->palabras_correctas,
+            "min_correctas" => $request->min_correctas,
+            "palabras_incorrectas" => $request->palabras_incorrectas,
+            "max_incorrectas" => $request->max_incorrectas,
         ]);
 
         return response()->json([
@@ -28,7 +31,10 @@ class RespuestaController extends Controller
         $respuesta = Respuesta::findOrFail($request->id);
 
         $respuesta->update([
-            "valores" => $request->valores,
+            "palabras_correctas" => $request->palabras_correctas,
+            "min_correctas" => $request->min_correctas,
+            "palabras_incorrectas" => $request->palabras_incorrectas,
+            "max_incorrectas" => $request->max_incorrectas,
         ]);
 
         return response()->json([

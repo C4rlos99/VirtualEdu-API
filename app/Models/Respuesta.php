@@ -11,7 +11,10 @@ class Respuesta extends Model
 
     protected $fillable = [
         "escena_id",
-        "valores",
+        "palabras_correctas",
+        "min_correctas",
+        "palabras_incorrectas",
+        "max_incorrectas",
     ];
 
     public function escena()

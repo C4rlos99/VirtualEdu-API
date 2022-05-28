@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId("usuario_id")->constrained()->onDelete("cascade");
             $table->string("titulo", 64);
             $table->boolean("visible");
+            $table->foreignId("lenguaje_id")->constrained()->onDelete("cascade");
             $table->boolean("eliminado")->default(false);
             $table->timestamps();
         });

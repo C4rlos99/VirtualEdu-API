@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Usuario;
+use App\Models\Lenguaje;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UsuarioSeeder extends Seeder
+class LenguajeSeeder extends Seeder
 {
     public function run()
     {
-        Usuario::factory(10)->create();
+        Lenguaje::factory(9)->create();
     }
 }

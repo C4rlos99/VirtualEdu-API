@@ -57,6 +57,7 @@ class EscenarioController extends Controller
             "titulo" => $request->titulo,
             "visible" => $request->visible,
             "usuario_id" => $usuario->id,
+            "lenguaje_id" => $request->lenguaje_id,
             "eliminado" => false,
         ]);
 
@@ -74,6 +75,7 @@ class EscenarioController extends Controller
         $escenario->update([
             "titulo" => $request->titulo,
             "visible" => $request->visible,
+            "lenguaje_id" => $request->lenguaje_id,
         ]);
 
         return response()->json([

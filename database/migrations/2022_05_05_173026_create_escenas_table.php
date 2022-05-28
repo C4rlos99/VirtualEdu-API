@@ -13,8 +13,8 @@ return new class extends Migration
             $table->foreignId("escena_tipo_id")->constrained()->onDelete("cascade");
             $table->foreignId("escenario_id")->constrained()->onDelete("cascade");
             $table->string("url_video", 256);
-            $table->string("url_video_apoyo", 256)->nullable(true);
-            $table->string("url_video_refuerzo", 256)->nullable(true);
+            $table->string("url_video_apoyo", 256)->nullable();
+            $table->string("url_video_refuerzo", 256)->nullable();
             $table->timestamps();
         });
     }
