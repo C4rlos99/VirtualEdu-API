@@ -3,10 +3,9 @@
 use App\Http\Controllers\EscenaController;
 use App\Http\Controllers\EscenarioController;
 use App\Http\Controllers\EscenaTipoController;
+use App\Http\Controllers\LenguajeController;
 use App\Http\Controllers\RespuestaController;
 use App\Http\Controllers\UsuarioController;
-use App\Models\Lenguaje;
-use App\Models\Respuesta;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get("/escena-tipos", "obtenerEscenaTipos");
     });
 
-    Route::controller(Lenguaje::class)->group(function () {
+    Route::controller(LenguajeController::class)->group(function () {
         Route::get("/lenguajes", "obtenerLenguajes");
     });
 });

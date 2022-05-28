@@ -10,7 +10,7 @@ class LenguajeResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "nombre" => $this->valor
+            "nombre" => $this->nombre
         ];
     }
 }

@@ -19,7 +19,7 @@ class EscenarioResource extends JsonResource
             "titulo" => $this->titulo,
             "visible" => $this->visible,
             "eliminado" => $this->eliminado,
-            "lenguaje" => $this->lenguaje_id,
+            "lenguaje_id" => $this->lenguaje_id,
             "fecha_creacion" => $this->updated_at,
         ];
     }
