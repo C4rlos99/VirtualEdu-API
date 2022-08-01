@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EliminarRespuesta;
 use App\Http\Requests\GuardarRespuesta;
+use App\Http\Resources\RespuestaResource;
 use App\Models\Respuesta;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,7 +22,7 @@ class RespuestaController extends Controller
 
         return response()->json([
             "mensaje" => "Respuesta creada",
-            "respuesta" => $respuesta,
+            "respuesta" => new RespuestaResource($respuesta),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
@@ -39,7 +40,7 @@ class RespuestaController extends Controller
 
         return response()->json([
             "mensaje" => "Respuesta modificada",
-            "respuesta" => $respuesta,
+            "respuesta" => new RespuestaResource($respuesta),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
