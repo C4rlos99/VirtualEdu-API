@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EliminarEscena;
 use App\Http\Requests\GuardarEscena;
-use App\Http\Requests\ObtenerEscena;
 use App\Http\Requests\ObtenerEscenas;
 use App\Http\Resources\EscenaResource;
 use App\Models\Escena;
@@ -36,16 +35,6 @@ class EscenaController extends Controller
 
         return response()->json([
             "escenas" => $escenas,
-            "status" => Response::HTTP_OK
-        ], Response::HTTP_OK);
-    }
-
-    public function obtenerEscena(ObtenerEscena $request)
-    {
-        $escena = Escena::findOrFail($request->id);
-
-        return response()->json([
-            "escena" => new EscenaResource($escena),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

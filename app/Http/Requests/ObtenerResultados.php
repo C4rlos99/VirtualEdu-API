@@ -20,7 +20,7 @@ class ObtenerResultados extends FormRequest
             }
         );
 
-        return $escenario !== null;
+        return $escenario !== null && !$escenario->eliminado;
     }
 
     public function rules()

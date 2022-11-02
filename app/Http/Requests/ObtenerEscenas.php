@@ -28,11 +28,11 @@ class ObtenerEscenas extends FormRequest
                 $escenarios = Escenario::all();
                 $escenario = $escenarios->first(
                     function ($escenario) {
-                        return $escenario->id == $this->escenario_id && !$escenario->eliminado;
+                        return $escenario->id == $this->escenario_id && $escenario->visible;
                     }
                 );
 
-                return $escenario !== null;
+                return $escenario !== null && !$escenario->eliminado;
         }
     }
 

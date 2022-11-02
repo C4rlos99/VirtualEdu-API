@@ -34,7 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(EscenaController::class)->group(function () {
         Route::get("/escenas/{escenario_id}", "obtenerEscenas");
         Route::get("/escenas-app/{escenario_id}", "obtenerEscenasApp");
-        Route::get("/escena/{id}", "obtenerEscena");
         Route::post("/escena", "crearEscena");
         Route::patch("/escena/{id}", "modificarEscena");
         route::delete("/escena/{id}", "eliminarEscena");
