@@ -31,4 +31,9 @@ class Escenario extends Model
     {
         return $this->belongsTo(lenguaje::class);
     }
+
+    public function resultados()
+    {
+        return $this->hasMany(Resultado::class);
+    }
 }

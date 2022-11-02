@@ -38,4 +38,9 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(Escenario::class);
     }
+
+    public function resultados()
+    {
+        return $this->hasMany(Resultado::class);
+    }
 }

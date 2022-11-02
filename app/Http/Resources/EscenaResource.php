@@ -10,6 +10,7 @@ class EscenaResource extends JsonResource
     {
         return [
             "id" => $this->id,
+            "titulo" => $this->titulo,
             "escenario_id" => $this->escenario_id,
             "escena_tipo_id" => $this->escena_tipo_id,
             "respuesta_id" => $this->respuesta_id,

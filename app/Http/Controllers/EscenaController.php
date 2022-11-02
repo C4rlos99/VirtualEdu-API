@@ -53,6 +53,7 @@ class EscenaController extends Controller
     public function crearEscena(GuardarEscena $request)
     {
         $escena = Escena::create([
+            "titulo" => $request->titulo,
             "escenario_id" => $request->escenario_id,
             "escena_tipo_id" => $request->escena_tipo_id,
             "respuesta_id" => $request->respuesta_id,
@@ -73,6 +74,7 @@ class EscenaController extends Controller
         $escena = Escena::findOrFail($request->id);
 
         $escena->update([
+            "titulo" => $request->titulo,
             "url_video" => $request->url_video,
             "url_video_apoyo" => $request->url_video_apoyo,
             "url_video_refuerzo" => $request->url_video_refuerzo,

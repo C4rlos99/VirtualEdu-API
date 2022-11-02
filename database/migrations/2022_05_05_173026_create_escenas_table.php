@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('escenas', function (Blueprint $table) {
             $table->id();
+            $table->string("titulo", 256);
             $table->foreignId("escena_tipo_id")->constrained()->onDelete("cascade");
             $table->foreignId("escenario_id")->constrained()->onDelete("cascade");
             $table->string("url_video", 256);

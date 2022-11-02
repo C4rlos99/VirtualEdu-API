@@ -10,6 +10,7 @@ class Escena extends Model
     use HasFactory;
 
     protected $fillable = [
+        "titulo",
         "escenario_id",
         "escena_tipo_id",
         "respuesta_id",

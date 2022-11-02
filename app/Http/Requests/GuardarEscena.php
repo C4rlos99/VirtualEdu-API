@@ -63,6 +63,7 @@ class GuardarEscena extends FormRequest
     public function rules()
     {
         $rules = [
+            "titulo" => "required",
             "url_video" => "required",
             "url_video_apoyo" => "prohibited",
             "url_video_refuerzo" => "prohibited",
@@ -91,6 +92,8 @@ class GuardarEscena extends FormRequest
     public function messages()
     {
         return [
+            "titulo.required" => "El campo titulo es obligatorio",
+
             "escenario_id.required" => "El campo escenario_id es obligatorio",
             "escenario_id.exists" => "El campo escenario_id no es válido",
 
