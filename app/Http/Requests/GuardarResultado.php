@@ -34,7 +34,6 @@ class GuardarResultado extends FormRequest
         ];
 
         if ($this->method() === "POST") {
-            $rules["usuario_id"] = "required|exist:usuarios,id";
             $rules["escenario_id"] = "required|exist:escenarios,id";
         }
 
@@ -44,9 +43,6 @@ class GuardarResultado extends FormRequest
     public function messages()
     {
         return [
-            "usuario_id.required" => "El campo usuario_id es obligatorio",
-            "usuario_id.exists" => "El campo usuario_id no es válido",
-
             "escenario_id.required" => "El campo escenario_id es obligatorio",
             "escenario_id.exists" => "El campo escenario_id no es válido",
 
