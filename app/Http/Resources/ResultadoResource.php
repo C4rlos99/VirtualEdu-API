@@ -12,6 +12,7 @@ class ResultadoResource extends JsonResource
             "id" => $this->id,
             "usuario_id" => new UsuarioResource($this->usuario),
             "escenario_id" => $this->escenario_id,
+            "respuestas" => $this->respuestas,
             "fecha_evaluacion" => $this->updated_at,
         ];
     }

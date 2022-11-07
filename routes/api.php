@@ -5,6 +5,7 @@ use App\Http\Controllers\EscenarioController;
 use App\Http\Controllers\EscenaTipoController;
 use App\Http\Controllers\LenguajeController;
 use App\Http\Controllers\RespuestaController;
+use App\Http\Controllers\ResultadoController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(LenguajeController::class)->group(function () {
         Route::get("/lenguajes", "obtenerLenguajes");
+    });
+
+    Route::controller(ResultadoController::class)->group(function () {
+        Route::get("/resultados/{escenario_id}", "obtenerResultados");
+        Route::get("/existe-resultado/{escenario_id}", "existeResultado");
+        Route::post("/resultado", "crearResultado");
+        Route::patch("/resultado/{id}", "modificarResultado");
     });
 });
 

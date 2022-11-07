@@ -44,7 +44,7 @@ class ResultadoController extends Controller
         $resultado =  Resultado::findOrFail($request->id);
 
         $resultado->update([
-            "respuesta" => $request->respuesta,
+            "respuestas" => $request->respuestas,
         ]);
 
         return response()->json([
