@@ -12,7 +12,7 @@ class ResultadoResource extends JsonResource
         return [
             "id" => $this->id,
             "nombre_usuario" => (new UsuarioResource($this->usuario))->nombre . " " . (new UsuarioResource($this->usuario))->apellidos,
-            "titulo_escenario" => (new EscenarioResource($this->escenario))->titulo,
+            "escenario_id" => $this->escenario_id,
             "respuestas" => $this->respuestas,
             "fecha_evaluacion" => $this->updated_at,
         ];

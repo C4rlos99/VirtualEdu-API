@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GuardarResultado;
 use App\Http\Requests\ObtenerResultados;
 use App\Http\Resources\ResultadoResource;
+use App\Models\Escenario;
 use App\Models\Resultado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,10 @@ class ResultadoController extends Controller
     {
         $resultados = Resultado::where("escenario_id", $request->escenario_id)->get();
 
+        $escenario = Escenario::findOrFail($request->escenario_id);
+
         return response()->json([
-            "resultados" => ResultadoResource::collection($resultados),
+            "resultados" => [ResultadoResource::collection($resultados), "escenario_titulo" => $escenario->titulo],
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
