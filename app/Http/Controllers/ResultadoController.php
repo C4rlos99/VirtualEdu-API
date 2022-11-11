@@ -20,7 +20,8 @@ class ResultadoController extends Controller
         $escenario = Escenario::findOrFail($request->escenario_id);
 
         return response()->json([
-            "resultados" => [ResultadoResource::collection($resultados), "escenario_titulo" => $escenario->titulo],
+            "resultados" => ResultadoResource::collection($resultados),
+            "titulo_escenario" => $escenario->titulo,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
