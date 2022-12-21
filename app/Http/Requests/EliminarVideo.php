@@ -7,25 +7,26 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class ObtenerEscenario extends FormRequest
+class EliminarVideo extends FormRequest
 {
     public function authorize()
     {
         $usuario = Auth::user();
 
-        switch ($this->route()->uri) {
-            case "api/escenario/{id}":
-                $escenarios = $usuario->escenarios()->get();
-                $escenario = $escenarios->first(
-                    function ($escenario) {
-                        return $escenario->id == $this->id && !$escenario->eliminado;
+        $escenarios = $usuario->escenarios()->get();
+        $escenario = $escenarios->first(
+            function ($escenario) {
+                $videos = $escenario->videos()->get();
+                $video = $videos->first(
+                    function ($video) {
+                        return $video->id == $this->id;
                     }
                 );
+                return $video !== null;
+            }
+        );
 
-                return $escenario != null;
-            case "api/escenarios-app/{clave}":
-                return true;
-        }
+        return $escenario !== null && !$escenario->eliminado;;
     }
 
     public function rules()

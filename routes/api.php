@@ -7,6 +7,7 @@ use App\Http\Controllers\LenguajeController;
 use App\Http\Controllers\RespuestaController;
 use App\Http\Controllers\ResultadoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get("/existe-resultado/{escenario_id}", "existeResultado");
         Route::post("/resultado", "crearResultado");
         Route::patch("/resultado/{id}", "modificarResultado");
+    });
+
+    Route::controller(VideoController::class)->group(function () {
+        Route::post("/guardar-video", "guardarVideo");
+        Route::delete("/eliminar-video/{id}", "eliminarVideo");
     });
 });
 

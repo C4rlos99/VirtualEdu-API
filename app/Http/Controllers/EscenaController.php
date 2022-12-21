@@ -46,9 +46,9 @@ class EscenaController extends Controller
             "escenario_id" => $request->escenario_id,
             "escena_tipo_id" => $request->escena_tipo_id,
             "respuesta_id" => $request->respuesta_id,
-            "url_video" => $request->url_video,
-            "url_video_apoyo" => $request->url_video_apoyo,
-            "url_video_refuerzo" => $request->url_video_refuerzo,
+            "video_id" => $request->video_id,
+            "video_apoyo_id" => $request->video_apoyo_id,
+            "video_refuerzo_id" => $request->video_refuerzo_id,
         ]);
 
         return response()->json([
@@ -64,9 +64,9 @@ class EscenaController extends Controller
 
         $escena->update([
             "titulo" => $request->titulo,
-            "url_video" => $request->url_video,
-            "url_video_apoyo" => $request->url_video_apoyo,
-            "url_video_refuerzo" => $request->url_video_refuerzo,
+            "video_id" => $request->video_id,
+            "video_apoyo_id" => $request->video_apoyo_id,
+            "video_refuerzo_id" => $request->video_refuerzo_id,
         ]);
 
         return response()->json([

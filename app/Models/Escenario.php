@@ -36,4 +36,9 @@ class Escenario extends Model
     {
         return $this->hasMany(Resultado::class);
     }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
 }

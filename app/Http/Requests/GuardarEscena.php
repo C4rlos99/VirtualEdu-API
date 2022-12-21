@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Escenario;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -14,6 +13,9 @@ class GuardarEscena extends FormRequest
     public function authorize()
     {
         $usuario = Auth::user();
+        $escenarioVideos = null;
+
+        $autoriza = false;
 
         switch ($this->method()) {
             case "POST":
@@ -23,6 +25,8 @@ class GuardarEscena extends FormRequest
                         return $escenario->id == $this->escenario_id && !$escenario->eliminado;
                     }
                 );
+
+                $escenarioVideos = $escenario;
 
                 $autoriza = $escenario !== null;
 
@@ -40,8 +44,7 @@ class GuardarEscena extends FormRequest
 
                     $autoriza = $autoriza && $escena;
                 }
-
-                return $autoriza;
+                break;
             case "PATCH":
                 $escenarios = $usuario->escenarios()->get();
                 $escenario = $escenarios->first(
@@ -56,17 +59,54 @@ class GuardarEscena extends FormRequest
                     }
                 );
 
-                return $escenario !== null && !$escenario->eliminado;;
+                $escenarioVideos = $escenario;
+
+                $autoriza = $escenario !== null && !$escenario->eliminado;
+
+                break;
         }
+
+        if ($autoriza && $escenarioVideos !== null) {
+            $videos = $escenarioVideos->videos()->get();
+            $video = $videos->first(
+                function ($video) {
+                    return $video->id == $this->video_id;
+                }
+            );
+
+            $autoriza = $autoriza && $video;
+
+            if ($autoriza && $this->video_apoyo_id) {
+                $videoApoyo = $videos->first(
+                    function ($video) {
+                        return $video->id == $this->video_apoyo_id;
+                    }
+                );
+
+                $autoriza = $autoriza && $videoApoyo;
+
+                if ($autoriza && $this->video_refuerzo_id) {
+                    $videoRefuerzo = $videos->first(
+                        function ($video) {
+                            return $video->id == $this->video_refuerzo_id;
+                        }
+                    );
+
+                    $autoriza = $autoriza && $videoRefuerzo;
+                }
+            }
+        }
+
+        return $autoriza;
     }
 
     public function rules()
     {
         $rules = [
             "titulo" => "required",
-            "url_video" => "required",
-            "url_video_apoyo" => "prohibited",
-            "url_video_refuerzo" => "prohibited",
+            "video_id" => "required|exists:videos,id",
+            "video_apoyo_id" => "prohibited",
+            "video_refuerzo_id" => "prohibited",
         ];
 
         if ($this->method() === "POST") {
@@ -77,10 +117,9 @@ class GuardarEscena extends FormRequest
 
         switch ($this->escena_tipo_id) {
             case 3:
-                $rules["url_video_refuerzo"] = "required";
+                $rules["video_refuerzo_id"] = "required|exists:videos,id";
             case 2:
-
-                $rules["url_video_apoyo"] = "required";
+                $rules["video_apoyo_id"] = "required|exists:videos,id";
                 break;
             default:
                 break;
@@ -102,12 +141,17 @@ class GuardarEscena extends FormRequest
 
             "respuesta_id.exists" => "El campo respuesta_id no es válido",
 
-            "url_video.required" => "El campo url_video es obligatorio",
-            "url_video_apoyo.required" => "El campo url_video_apoyo es obligatorio",
-            "url_video_refuerzo.required" => "El campo url_video_refuerzo es obligatorio",
+            "video_id.required" => "El campo video_id es obligatorio",
+            "video_id.exists" => "El campo video_id no es válido",
 
-            "url_video_apoyo.prohibited" => "El campo url_video_apoyo solo puede estar presente para los tipos de escena 2 y 3",
-            "url_video_refuerzo.prohibited" => "El campo url_video_refuerzo solo puede estar presente para el tipo de escena 3",
+            "video_apoyo_id.required" => "El campo video_apoyo_id es obligatorio",
+            "video_apoyo_id.exists" => "El campo video_apoyo_id no es válido",
+
+            "video_refuerzo_id.required" => "El campo video_refuerzo_id es obligatorio",
+            "video_refuerzo_id.exists" => "El campo video_refuerzo_id no es válido",
+
+            "video_apoyo_id.prohibited" => "El campo video_apoyo_id solo puede estar presente para los tipos de escena 2 y 3",
+            "video_refuerzo_id.prohibited" => "El campo video_refuerzo_id solo puede estar presente para el tipo de escena 3",
         ];
     }
 

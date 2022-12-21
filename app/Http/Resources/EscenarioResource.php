@@ -6,12 +6,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class EscenarioResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
     public function toArray($request)
     {
         return [
@@ -20,6 +14,7 @@ class EscenarioResource extends JsonResource
             "visible" => $this->visible,
             "eliminado" => $this->eliminado,
             "lenguaje_id" => $this->lenguaje_id,
+            "videos" => VideoResource::collection($this->videos),
             "fecha_creacion" => $this->updated_at,
         ];
     }

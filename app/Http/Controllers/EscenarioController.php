@@ -25,7 +25,7 @@ class EscenarioController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function obtenerEscenariosApp(Request $request)
+    public function obtenerEscenariosApp(ObtenerEscenario $request)
     {
         $usuario = Usuario::where("clave", $request->clave)->first();
         $escenarios = [];
