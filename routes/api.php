@@ -66,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(VideoController::class)->group(function () {
+        Route::get("/tiene-escenas/{id}", "tieneEscenas");
         Route::post("/guardar-video", "guardarVideo");
         Route::delete("/eliminar-video/{id}", "eliminarVideo");
     });

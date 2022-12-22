@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EliminarVideo;
 use App\Http\Requests\GuardarVideo;
+use App\Http\Requests\ObtenerVideo;
+use App\Http\Resources\EscenaResource;
 use App\Http\Resources\VideoResource;
 use App\Models\Video;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +43,20 @@ class VideoController extends Controller
 
         return response()->json([
             "mensaje" => "Video eliminado",
+            "status" => Response::HTTP_OK
+        ], Response::HTTP_OK);
+    }
+
+    public function tieneEscenas(ObtenerVideo $request)
+    {
+        $video = Video::findOrFail($request->id);
+
+        $tieneEscenas = !($video->escenas()->get()->isEmpty() &&
+            $video->escenasApoyo()->get()->isEmpty() &&
+            $video->escenasRefuerzo()->get()->isEmpty());
+
+        return response()->json([
+            "tiene_escenas" => $tieneEscenas,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

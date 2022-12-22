@@ -17,11 +17,17 @@ class Video extends Model
 
     public function escenas()
     {
-        $escenas = $this->hasMany(Escena::class);
-        $escenas_apoyo = $this->hasMany(Escena::class, "video_apoyo_id");
-        $escenas_refuerzo = $this->hasMany(Escena::class, "video_refuerzo_id");
+        return $this->hasMany(Escena::class);
+    }
 
-        return $escenas->merge($escenas_apoyo->merge($escenas_refuerzo));
+    public function escenasApoyo()
+    {
+        return $this->hasMany(Escena::class, "video_apoyo_id");
+    }
+
+    public function escenasRefuerzo()
+    {
+        return $this->hasMany(Escena::class, "video_refuerzo_id");
     }
 
     public function escenario()
