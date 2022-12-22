@@ -12,12 +12,12 @@ class GuardarResultado extends FormRequest
 {
     public function authorize()
     {
-        $usuario = Auth::user();
-
         switch ($this->method()) {
             case "POST":
                 return true;
             case "PATCH":
+                $usuario = Auth::user();
+
                 $resultados = $usuario->resultados()->get();
                 $resultado = $resultados->first(
                     function ($resultado) {

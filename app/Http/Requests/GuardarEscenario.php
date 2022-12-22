@@ -12,12 +12,12 @@ class GuardarEscenario extends FormRequest
 {
     public function authorize()
     {
-        $usuario = Auth::user();
-
         switch ($this->method()) {
             case "POST":
                 return true;
             case "PATCH":
+                $usuario = Auth::user();
+
                 $escenarios = $usuario->escenarios()->get();
                 $escenario = $escenarios->first(
                     function ($escenario) {

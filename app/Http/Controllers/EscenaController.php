@@ -7,6 +7,7 @@ use App\Http\Requests\GuardarEscena;
 use App\Http\Requests\ObtenerEscenas;
 use App\Http\Resources\EscenaResource;
 use App\Models\Escena;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenaController extends Controller

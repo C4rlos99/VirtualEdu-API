@@ -12,10 +12,11 @@ class ObtenerEscenas extends FormRequest
 {
     public function authorize()
     {
-        $usuario = Auth::user();
 
         switch ($this->route()->uri) {
             case "api/escenas/{escenario_id}":
+                $usuario = Auth::user();
+
                 $escenarios = $usuario->escenarios()->get();
                 $escenario = $escenarios->first(
                     function ($escenario) {

@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EliminarVideo;
 use App\Http\Requests\GuardarVideo;
 use App\Http\Requests\ObtenerVideo;
-use App\Http\Resources\EscenaResource;
 use App\Http\Resources\VideoResource;
+use App\Models\Escena;
 use App\Models\Video;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
+
+use function PHPSTORM_META\map;
 
 class VideoController extends Controller
 {
@@ -35,6 +38,19 @@ class VideoController extends Controller
 
     public function eliminarVideo(EliminarVideo $request)
     {
+        $titulosEscenasVideo = Escena::select("titulo")->where("video_id", $request->id)->orWhere("video_apoyo_id", $request->id)->orWhere("video_refuerzo_id", $request->id)->get();
+        $titulosEscenasVideo = $titulosEscenasVideo->map(function ($item) {
+            return $item->titulo;
+        })->join(", ");
+
+        if ($titulosEscenasVideo)
+            throw new HttpResponseException(response()->json([
+                "mensaje" => "Oh! Algo no fue bien",
+                "errores" => "El video no puede ser eliminado.\n
+                    Modifique los campos de video para las siguientes escenas: " . $titulosEscenasVideo . ".",
+                "status" => Response::HTTP_UNPROCESSABLE_ENTITY,
+            ], Response::HTTP_UNPROCESSABLE_ENTITY));
+
         $video = Video::findOrFail($request->id);
 
         unlink($video->localizacion);
@@ -43,20 +59,6 @@ class VideoController extends Controller
 
         return response()->json([
             "mensaje" => "Video eliminado",
-            "status" => Response::HTTP_OK
-        ], Response::HTTP_OK);
-    }
-
-    public function tieneEscenas(ObtenerVideo $request)
-    {
-        $video = Video::findOrFail($request->id);
-
-        $tieneEscenas = !($video->escenas()->get()->isEmpty() &&
-            $video->escenasApoyo()->get()->isEmpty() &&
-            $video->escenasRefuerzo()->get()->isEmpty());
-
-        return response()->json([
-            "tiene_escenas" => $tieneEscenas,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

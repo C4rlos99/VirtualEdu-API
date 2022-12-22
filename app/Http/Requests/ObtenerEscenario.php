@@ -13,19 +13,14 @@ class ObtenerEscenario extends FormRequest
     {
         $usuario = Auth::user();
 
-        switch ($this->route()->uri) {
-            case "api/escenario/{id}":
-                $escenarios = $usuario->escenarios()->get();
-                $escenario = $escenarios->first(
-                    function ($escenario) {
-                        return $escenario->id == $this->id && !$escenario->eliminado;
-                    }
-                );
+        $escenarios = $usuario->escenarios()->get();
+        $escenario = $escenarios->first(
+            function ($escenario) {
+                return $escenario->id == $this->id && !$escenario->eliminado;
+            }
+        );
 
-                return $escenario != null;
-            case "api/escenarios-app/{clave}":
-                return true;
-        }
+        return $escenario != null;
     }
 
     public function rules()
