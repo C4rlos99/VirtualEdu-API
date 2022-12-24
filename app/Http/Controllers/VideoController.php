@@ -4,34 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EliminarVideo;
 use App\Http\Requests\GuardarVideo;
-use App\Http\Requests\ObtenerVideo;
 use App\Http\Resources\VideoResource;
 use App\Models\Escena;
 use App\Models\Video;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
-use function PHPSTORM_META\map;
-
 class VideoController extends Controller
 {
-    public function guardarVideo(GuardarVideo $request)
+    public function guardarVideos(GuardarVideo $request)
     {
-        $file = $request->file("video");
+        $videosCollection = new Collection();
 
-        $fileNombre = time() . "_" . $file->getClientOriginalName();
+        foreach ($request->videos as $file) {
+            $fileNombre = time() . "_" . $file->getClientOriginalName();
 
-        $file->storeAs("", $fileNombre, "public");
+            $file->storeAs("", $fileNombre, "public");
 
-        $video = Video::create([
-            "nombre" => $file->getClientOriginalName(),
-            "escenario_id" => $request->escenario_id,
-            "localizacion" => "videos/" . $fileNombre,
-        ]);
+            $video = Video::create([
+                "nombre" => $file->getClientOriginalName(),
+                "escenario_id" => $request->escenario_id,
+                "localizacion" => "videos/" . $fileNombre,
+            ]);
+
+            $videosCollection->append($video);
+        }
 
         return response()->json([
-            "mensaje" => "Video guardado",
-            "video" => new VideoResource($video),
+            "mensaje" => "Videos guardados",
+            "video" => VideoResource::collection($videosCollection),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }

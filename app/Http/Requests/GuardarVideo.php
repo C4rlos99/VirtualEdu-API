@@ -27,7 +27,8 @@ class GuardarVideo extends FormRequest
     public function rules()
     {
         return [
-            "video" => "required|mimetypes:video/mp4",
+            "videos" => "required|array",
+            "videos.*" => "required|mimetypes:video/mp4",
             "escenario_id" => "required|exists:escenarios,id",
         ];
     }
@@ -35,8 +36,10 @@ class GuardarVideo extends FormRequest
     public function messages()
     {
         return [
-            "video.required" => "El campo video es obligatorio",
-            "video.mimetypes" => "Solo se aceptan ficheros .mp4",
+            "videos.required" => "El campo videos es obligatorio",
+            "videos.array" => "El campo videos debe ser de tipo array",
+            "videos.*.required" => "El campo videos debe contener algún archivo",
+            "videos.*.mimetypes" => "Solo se aceptan ficheros .mp4",
 
             "escenario_id.required" => "El campo escenario_id es obligatorio",
             "escenario_id.exists" => "El campo escenario_id no es válido",

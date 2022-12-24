@@ -66,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(VideoController::class)->group(function () {
-        Route::post("/guardar-video", "guardarVideo");
+        Route::post("/guardar-videos", "guardarVideos");
         Route::delete("/eliminar-video/{id}", "eliminarVideo");
     });
 });
