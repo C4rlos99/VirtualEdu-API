@@ -15,7 +15,7 @@ class VideoController extends Controller
 {
     public function guardarVideos(GuardarVideo $request)
     {
-        $videosCollection = new Collection();
+        $videosCollection = [];
 
         foreach ($request->videos as $file) {
             $fileNombre = time() . "_" . $file->getClientOriginalName();
@@ -28,12 +28,12 @@ class VideoController extends Controller
                 "localizacion" => "videos/" . $fileNombre,
             ]);
 
-            $videosCollection->append($video);
+            $videosCollection[] = $video;
         }
 
         return response()->json([
             "mensaje" => "Videos guardados",
-            "video" => VideoResource::collection($videosCollection),
+            "videos" => VideoResource::collection($videosCollection),
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
