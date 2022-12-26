@@ -7,7 +7,6 @@ use App\Http\Requests\GuardarVideo;
 use App\Http\Resources\VideoResource;
 use App\Models\Escena;
 use App\Models\Video;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,9 +46,7 @@ class VideoController extends Controller
 
         if ($titulosEscenasVideo)
             throw new HttpResponseException(response()->json([
-                "mensaje" => "Oh! Algo no fue bien",
-                "errores" => "El video no puede ser eliminado.\n
-                    Modifique los campos de video para las siguientes escenas: " . $titulosEscenasVideo . ".",
+                "mensaje" => "El video no puede ser eliminado\nPara ello modifique los campos de video para las siguientes escenas:\n\n" . $titulosEscenasVideo,
                 "status" => Response::HTTP_UNPROCESSABLE_ENTITY,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
 
