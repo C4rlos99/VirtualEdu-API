@@ -14,9 +14,9 @@ class EscenaResource extends JsonResource
             "escenario_id" => $this->escenario_id,
             "escena_tipo_id" => $this->escena_tipo_id,
             "respuesta_id" => $this->respuesta_id,
-            "video_id" => $this->video_id,
-            "video_apoyo_id" => $this->video_apoyo_id,
-            "video_refuerzo_id" => $this->video_refuerzo_id,
+            "video" => new VideoResource($this->video),
+            "video_apoyo" => new VideoResource($this->videoApoyo),
+            "video_refuerzo" => new VideoResource($this->videoRefuerzo),
             "respuestas" => RespuestaResource::collection($this->respuestas),
         ];
     }
