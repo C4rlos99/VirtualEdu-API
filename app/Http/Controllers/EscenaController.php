@@ -7,35 +7,34 @@ use App\Http\Requests\GuardarEscena;
 use App\Http\Requests\ObtenerEscenas;
 use App\Http\Resources\EscenaResource;
 use App\Models\Escena;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EscenaController extends Controller
 {
     public function obtenerEscenas(ObtenerEscenas $request)
     {
-        $escenaRaiz = Escena::where("escenario_id", $request->escenario_id, "and")->where("respuesta_id", null)->first();
-        $escenas = null;
+        $escena = Escena::where("escenario_id", $request->escenario_id, "and")->where("respuesta_id", null)->first();
+        $escenaRaiz = null;
 
-        if ($escenaRaiz)
-            $escenas = new EscenaResource($escenaRaiz);
+        if ($escena)
+            $escenaRaiz = new EscenaResource($escena);
 
         return response()->json([
-            "escenas" => $escenas,
+            "escena" => $escenaRaiz,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
 
     public function obtenerEscenasApp(ObtenerEscenas $request)
     {
-        $escenaRaiz = Escena::where("escenario_id", $request->escenario_id, "and")->where("respuesta_id", null)->first();
-        $escenas = null;
+        $escena = Escena::where("escenario_id", $request->escenario_id, "and")->where("respuesta_id", null)->first();
+        $escenaRaiz = null;
 
-        if ($escenaRaiz)
-            $escenas = new EscenaResource($escenaRaiz);
+        if ($escena)
+            $escenaRaiz = new EscenaResource($escena);
 
         return response()->json([
-            "escenas" => $escenas,
+            "escena" => $escenaRaiz,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
