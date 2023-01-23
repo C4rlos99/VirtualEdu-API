@@ -17,7 +17,7 @@ class EscenarioController extends Controller
     {
         $usuario = Auth::user();
 
-        $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("eliminado", false)->get();
+        $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("eliminado", false)->orderBy("updated_at", "desc")->get();
 
         return response()->json([
             "escenarios" => EscenarioResource::collection($escenarios),
@@ -31,7 +31,7 @@ class EscenarioController extends Controller
         $escenarios = [];
 
         if ($usuario)
-            $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("visible", true, "and")->where("eliminado", false)->get();
+            $escenarios = Escenario::where("usuario_id", $usuario->id, "and")->where("visible", true, "and")->where("eliminado", false)->orderBy("updated_at", "desc")->get();
 
         return response()->json([
             "escenarios" => EscenarioResource::collection($escenarios),
