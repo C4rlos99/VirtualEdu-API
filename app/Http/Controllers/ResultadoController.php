@@ -66,7 +66,7 @@ class ResultadoController extends Controller
 
         $resultado_id = null;
         if ($existe)
-            $resultado_id = Resultado::where("usuario_id", $usuario->id, "and")->where("escenario_id", $request->escenario_id)->get()->id;
+            $resultado_id = Resultado::where("usuario_id", $usuario->id, "and")->where("escenario_id", $request->escenario_id)->first()->id;
 
         return response()->json([
             "existe" => $existe,
