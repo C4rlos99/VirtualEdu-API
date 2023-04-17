@@ -62,11 +62,15 @@ class ResultadoController extends Controller
     {
         $usuario = Auth::user();
 
-        $resultado = Resultado::where("usuario_id", $usuario->id, "and")->where("escenario_id", $request->escenario_id)->get();
+        $existe = Resultado::where("usuario_id", $usuario->id, "and")->where("escenario_id", $request->escenario_id)->exists();
+
+        $resultado_id = null;
+        if ($existe)
+            $resultado_id = Resultado::where("usuario_id", $usuario->id, "and")->where("escenario_id", $request->escenario_id)->get()->id;
 
         return response()->json([
-            "existe" => $resultado != null,
-            "resultado_id" => $resultado?->id,
+            "existe" => $existe,
+            "resultado_id" => $resultado_id,
             "status" => Response::HTTP_OK
         ], Response::HTTP_OK);
     }
