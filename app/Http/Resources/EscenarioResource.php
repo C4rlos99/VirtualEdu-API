@@ -14,6 +14,7 @@ class EscenarioResource extends JsonResource
             "visible" => $this->visible,
             "eliminado" => $this->eliminado,
             "lenguaje_id" => $this->lenguaje_id,
+            "spread_sheet_id" => (new UsuarioResource($this->usuario))->spread_sheet_id,
             "videos" => VideoResource::collection($this->videos),
             "fecha_creacion" => $this->updated_at,
         ];

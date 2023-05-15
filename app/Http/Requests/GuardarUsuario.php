@@ -19,6 +19,7 @@ class GuardarUsuario extends FormRequest
         return [
             "nombre" => "required",
             "apellidos" => "required",
+            "spread_sheet_id" => "nullable",
             "correo" => "required|email:rfc,dns|unique:usuarios",
             "password" => "required|min:4|max:12|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/",
             "rePassword" => "required|same:password",

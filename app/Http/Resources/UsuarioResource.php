@@ -18,6 +18,7 @@ class UsuarioResource extends JsonResource
             "id" => $this->id,
             "nombre" => $this->nombre,
             "apellidos" => $this->apellidos,
+            "spread_sheet_id" => $this->spread_sheet_id,
             "clave" => $this->clave,
         ];
     }

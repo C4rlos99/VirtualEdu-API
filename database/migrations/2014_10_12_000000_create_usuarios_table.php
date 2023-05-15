@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('nombre', 16);
             $table->string('apellidos', 32);
             $table->string('correo', 32)->unique();
+            $table->string('spread_sheet_id', 64)->nullable();
             $table->char('clave', 8)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

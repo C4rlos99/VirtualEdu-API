@@ -20,6 +20,7 @@ class UsuarioController extends Controller
             "nombre" => $request->nombre,
             "apellidos" => $request->apellidos,
             "correo" => $request->correo,
+            "spread_sheet_id" => $request->spread_sheet_id,
             "clave" => Str::random(8),
             "password" => Hash::make($request->password),
         ]);

@@ -21,6 +21,7 @@ class Usuario extends Authenticatable
         "nombre",
         "apellidos",
         "correo",
+        "spread_sheet_id",
         "clave",
         "password",
     ];
