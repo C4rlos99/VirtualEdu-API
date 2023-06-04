@@ -11,6 +11,7 @@ class Lenguaje extends Model
 
     protected $fillable = [
         "nombre",
+        "codigo",
     ];
 
     public function escenarios()

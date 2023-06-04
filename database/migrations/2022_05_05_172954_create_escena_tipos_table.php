@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('escena_tipos', function (Blueprint $table) {
             $table->id();
-            $table->string("nombre", 32)->unique();
+            $table->string("nombre", 128)->unique();
             $table->timestamps();
         });
     }

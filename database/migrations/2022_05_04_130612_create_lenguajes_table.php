@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('lenguajes', function (Blueprint $table) {
             $table->id();
-            $table->char("nombre", 8)->unique();
+            $table->string("nombre", 16)->unique();
+            $table->char("codigo", 5)->unique();
             $table->timestamps();
         });
     }
