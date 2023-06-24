@@ -22,52 +22,55 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::controller(UsuarioController::class)->group(function () {
-        Route::get("/usuario", "usuario");
-        Route::post("/cerrar-sesion", "cerrarSesion");
-    });
 
-    Route::controller(RespuestaController::class)->group(function () {
-        Route::post("/respuesta", "crearRespuesta");
-        Route::patch("/respuesta/{id}", "modificarRespuesta");
-        Route::delete("/respuesta/{id}", "eliminarRespuesta");
-    });
+    Route::middleware('cors', function () {
+        Route::controller(UsuarioController::class)->group(function () {
+            Route::get("/usuario", "usuario");
+            Route::post("/cerrar-sesion", "cerrarSesion");
+        });
 
-    Route::controller(EscenaController::class)->group(function () {
-        Route::get("/escenas/{escenario_id}", "obtenerEscenas");
-        Route::get("/escenas-app/{escenario_id}", "obtenerEscenasApp");
-        Route::post("/escena", "crearEscena");
-        Route::patch("/escena/{id}", "modificarEscena");
-        route::delete("/escena/{id}", "eliminarEscena");
-    });
+        Route::controller(RespuestaController::class)->group(function () {
+            Route::post("/respuesta", "crearRespuesta");
+            Route::patch("/respuesta/{id}", "modificarRespuesta");
+            Route::delete("/respuesta/{id}", "eliminarRespuesta");
+        });
 
-    Route::controller(EscenarioController::class)->group(function () {
-        Route::get("/escenarios", "obtenerEscenarios");
-        Route::get("/escenarios-app/{clave}", "obtenerEscenariosApp");
-        Route::get("/escenario/{id}", "obtenerEscenario");
-        Route::post("/escenario", "crearEscenario");
-        Route::patch("/escenario/{id}", "modificarEscenario");
-        route::patch("/eliminar-escenario/{id}", "eliminarEscenario");
-    });
+        Route::controller(EscenaController::class)->group(function () {
+            Route::get("/escenas/{escenario_id}", "obtenerEscenas");
+            Route::get("/escenas-app/{escenario_id}", "obtenerEscenasApp");
+            Route::post("/escena", "crearEscena");
+            Route::patch("/escena/{id}", "modificarEscena");
+            route::delete("/escena/{id}", "eliminarEscena");
+        });
 
-    Route::controller(EscenaTipoController::class)->group(function () {
-        Route::get("/escena-tipos", "obtenerEscenaTipos");
-    });
+        Route::controller(EscenarioController::class)->group(function () {
+            Route::get("/escenarios", "obtenerEscenarios");
+            Route::get("/escenarios-app/{clave}", "obtenerEscenariosApp");
+            Route::get("/escenario/{id}", "obtenerEscenario");
+            Route::post("/escenario", "crearEscenario");
+            Route::patch("/escenario/{id}", "modificarEscenario");
+            route::patch("/eliminar-escenario/{id}", "eliminarEscenario");
+        });
 
-    Route::controller(LenguajeController::class)->group(function () {
-        Route::get("/lenguajes", "obtenerLenguajes");
-    });
+        Route::controller(EscenaTipoController::class)->group(function () {
+            Route::get("/escena-tipos", "obtenerEscenaTipos");
+        });
 
-    Route::controller(ResultadoController::class)->group(function () {
-        Route::get("/resultados/{escenario_id}", "obtenerResultados");
-        Route::get("/existe-resultado/{escenario_id}", "existeResultado");
-        Route::post("/resultado", "crearResultado");
-        Route::patch("/resultado/{id}", "modificarResultado");
-    });
+        Route::controller(LenguajeController::class)->group(function () {
+            Route::get("/lenguajes", "obtenerLenguajes");
+        });
 
-    Route::controller(VideoController::class)->group(function () {
-        Route::post("/guardar-videos", "guardarVideos");
-        Route::delete("/eliminar-video/{id}", "eliminarVideo");
+        Route::controller(ResultadoController::class)->group(function () {
+            Route::get("/resultados/{escenario_id}", "obtenerResultados");
+            Route::get("/existe-resultado/{escenario_id}", "existeResultado");
+            Route::post("/resultado", "crearResultado");
+            Route::patch("/resultado/{id}", "modificarResultado");
+        });
+
+        Route::controller(VideoController::class)->group(function () {
+            Route::post("/guardar-videos", "guardarVideos");
+            Route::delete("/eliminar-video/{id}", "eliminarVideo");
+        });
     });
 });
 
