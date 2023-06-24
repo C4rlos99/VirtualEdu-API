@@ -31,6 +31,4 @@ return [
 
     'supports_credentials' => true,
 
-    'mode' => 'no-cors'
-
 ];
