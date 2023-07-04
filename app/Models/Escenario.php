@@ -29,7 +29,7 @@ class Escenario extends Model
 
     public function lenguaje()
     {
-        return $this->belongsTo(lenguaje::class);
+        return $this->belongsTo(Lenguaje::class);
     }
 
     public function resultados()
