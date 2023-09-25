@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("usuario_id")->nullable()->constrained()->onDelete("set null");
             $table->foreignId("escenario_id")->nullable()->constrained()->onDelete("set null");
-            $table->string("respuestas");
+            $table->text("respuestas");
             $table->timestamps();
         });
     }
